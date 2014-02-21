@@ -1,0 +1,16 @@
+# back up files
+###############
+*.~
+
+# pdflatex generated files
+##########################
+*.bst
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.pdf
+
+
