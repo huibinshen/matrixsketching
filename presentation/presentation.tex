@@ -43,9 +43,9 @@ Aalto University, School of Science and Technology}
 
 \begin{frame}{Background}
 \begin{itemize}
-\item Many applications are based on matrix, \emph{e.g.} search engine (document-term matrix), social networks (adjacency matrix).
-\item In the ``Big data'' setting, matrix could be very large.
-\item One way to handle massive data is to utilize map-reduce like programming model.
+  \item Many applications are based on matrix, \emph{e.g.} search engine (document-term matrix), social networks (adjacency matrix).
+  \item In the ``Big data'' setting, matrix could be very large.
+  \item One way to handle massive data is to utilize map-reduce like programming model.
 \end{itemize}
 \end{frame}
 
@@ -53,8 +53,8 @@ Aalto University, School of Science and Technology}
 
 \begin{frame}{Background}
 \begin{itemize}
-\item This paper: approximate the original matrix by a much smaller one while still preserving the correlation (if assume centering in the feature space). 
-\item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$ columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
+  \item This paper: approximate the original matrix by a much smaller one while still preserving the correlation (if assume centering in the feature space). 
+  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$ columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
 
 This paper shows (Proof shown later):
 \begin{align}
