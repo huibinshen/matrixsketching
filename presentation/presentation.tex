@@ -41,6 +41,164 @@ Aalto University, School of Science and Technology}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\begin{frame}{Background}
+\begin{itemize}
+\item Many applications are based on matrix, \emph{e.g.} search engine (document-term matrix), social networks (adjacency matrix).
+\item In the ``Big data'' setting, matrix could be very large.
+\item One way to handle massive data is to utilize map-reduce like programming model.
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Background}
+\begin{itemize}
+\item This paper: approximate the original matrix by a much smaller one while still preserving the correlation (if assume centering in the feature space). 
+\item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$ columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
+
+This paper shows (Proof shown later):
+\begin{align}
+B^TB \prec A^TA \quad \text{and} \quad || A^TA-B^TB || \leq 2||A||_f^2/\ell \nonumber
+\end{align}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}{Related work}
+\begin{itemize}
+\item 
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{What is a sketch?}
+\begin{itemize}
+  \item A sketch of a matrix $A$ is another matrix $B$ which is significantly
+  smaller than $A$, but still approximates it well.
+  \item A \textit{good} sketch matrix is one on which some computations can
+  be performed, \textit{without} much loss of precision.
+   \emph{(as opposed to performing them on the original matrix)}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks=1]{What would one need a sketch?}
+\begin{itemize}
+  \item Modern large data sets are often viewed as matrices
+   \emph{(which are often extremely large)}
+  \item{Examples:}
+  \begin{itemize}
+    \item Textual data in the bag-of-words model \emph{(Where the rows
+    correspond to documents)}
+    \item Large-scale image analysis \emph{(Each row correspnds to one image,
+    and contains either pixel values, or other derived feature values)}
+  \end{itemize}
+  \item Low rank approximations are used in PCA, LSI, $k$-means clustering
+\end{itemize}
+
+\framebreak
+
+\begin{itemize}
+  \item Typically, compute the SVD of some large matrix $A$
+  \item Then approximate using the first $k$ singular vectors
+  \begin{itemize}
+     \item where $k \geq t$, i.e. we are interested only in unit vectors such
+     that $\vectornorm{Ax} \geq t$.
+  \end{itemize}
+  \item However, the distributed nature of such matrices renders SVD infeasible
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{The proposed \textit{Frequent-directions} algorithm}
+\begin{itemize}
+\item It allows for the process to be inverted
+\begin{itemize}
+\item Prescribe the threshold $t$ in advance and find the space spanned by all
+vectors $x$, such that $\vectornorm{Ax} \geq t$.
+\item In this setting, computing the SVD is not necessary anymore!
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Properties of matrix sketching methods}
+Designed to be \textit{pass-efficient}
+\begin{itemize}
+\item i.e. data can be read only a \textit{constant} number of times.
+\end{itemize}
+The \textit{streaming model}: only one pass is permitted!
+\begin{itemize}
+\item Sketching becomes more challenging, since each row can be processed only
+once. \emph{(further, storage is severely limited)}
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks=1]{Existing approaches}
+There are three main approaches:
+\begin{itemize}
+\item \textit{random-projection}
+\item \textit{hashing}
+\item \textit{sampling}
+\end{itemize}
+
+Proposed fourth approach, \textit{Frequent-directions}.
+
+\framebreak
+
+Random-projection: encaptures two classes of methods
+\begin{enumerate}[(i)]
+  \item Generate a sparser version of the matrix.
+   \begin{itemize}
+   \item It can then be stored \textit{more efficiently}, and
+   \item can be multiplied \textit{faster} by other matrices.
+    \end{itemize}
+  \item Randomly combine matrix rows.
+\end{enumerate}
+
+\framebreak
+
+Hashing:
+\begin{itemize}
+  \item Simple and efficient \textit{subspace embeddings}
+     that can be applied in $O(nnz(A))$ time, for any matrix $A$.
+\end{itemize}
+
+\framebreak
+
+Sampling in the context of the \textit{Column Subset Selection Problem}:
+\begin{itemize}
+  \item find a small subset of matrix rows (or columns) that approximates
+  the entire matrix
+  \item solved using a simple streaming solution:
+   \begin{itemize}
+   \item sample rows from the input matrix with probability proportional to
+   their squared $\ell_{2}$ norm
+   \end{itemize}
+\end{itemize}
+
+\framebreak
+
+Frequent-directions:
+\begin{itemize}
+  \item
+\end{itemize}
+
+\end{frame}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
