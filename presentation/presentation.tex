@@ -9,6 +9,7 @@
 \usepackage{url}
 \usepackage{lastpage}
 \usepackage{subfigure}
+\usepackage{algpseudocode}
 
 \title{Simple and Deterministic Matrix Sketching}
 
@@ -210,9 +211,27 @@ Connection to SVD of $A$:
   \item $A = U\Sigma V^T \Leftrightarrow U^TA = \Sigma V^T \Leftrightarrow Au = \sigma v$.
   \item $\vectornorm{Au}^2 = \vectornorm{\sigma v}^2 = \sigma^2$.
 \end{itemize}
-Change $u$ to $x$: the frequency of a direction $x$ is the square of corresponding singular value $\sigma^2$! \\
   \vspace{2 mm}
-Finding $\ell$ most frequent directions is transferred to finding $\ell$ most frequent sigular values.
+Change $u$ to $x$: \\
+  \vspace{2 mm}
+
+The frequency of a direction is indicated by the square of corresponding sigular value $\sigma^2$.
+
+\framebreak
+The algorithm:
+  \begin{algorithmic}
+    \State \textbf{Input}: $\ell$, $A \in \mathbb{R}^{n\times m}$
+    \State $B \leftarrow $ all zeros matrix $\in \mathbb{R}^{\ell\times m}$
+    \For{$i =1,\ldots,n$} 
+    \State Insert $i^{th}$ row of $A$ into zero valued row of $B$
+    \If {$B$ has no zero valued rows}
+      \State $[U,\Sigma,V] \leftarrow SVD(B)$
+      \State $\delta \leftarrow \sigma_{\ell/2}^2$
+      \State $\breve{\Sigma} \leftarrow \sqrt{\max(\Sigma^2-I_\ell\delta,0)}$
+      \State $B\leftarrow \breve{\Sigma}V^T$
+    \EndIf
+    \EndFor
+  \end{algorithmic}
 \end{frame}
 
 
