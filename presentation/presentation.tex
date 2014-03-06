@@ -19,6 +19,7 @@ Aalto University, School of Science and Technology}
 \aaltofootertext{H. Georgiev and H. Shen}{T-61.6020}{\arabic{page}/\pageref{LastPage}\ }
 
 %\date{}
+\newcommand{\vectornorm}[1]{\left\|#1\right\|}
 
 \begin{document}
 
@@ -41,36 +42,30 @@ Aalto University, School of Science and Technology}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-\begin{frame}{Background}
-\begin{itemize}
-  \item Many applications are based on matrix, \emph{e.g.} search engine (document-term matrix), social networks (adjacency matrix).
-  \item In the ``Big data'' setting, matrix could be very large.
-  \item One way to handle massive data is to utilize map-reduce like programming model.
-\end{itemize}
-\end{frame}
+%\begin{frame}{Background}
+%\begin{itemize}
+%  \item Many applications are based on matrix, \emph{e.g.} search engine (document-term matrix), social networks (adjacency matrix).
+%  \item In the ``Big data'' setting, matrix could be very large.
+%  \item One way to handle massive data is to utilize map-reduce like programming model.
+%\end{itemize}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{Background}
-\begin{itemize}
-  \item This paper: approximate the original matrix by a much smaller one while still preserving the correlation (if assume centering in the feature space). 
-  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$ columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
+%\begin{frame}{Background}
+%\begin{itemize}
+%  \item This paper: approximate the original matrix by a much smaller one while still preserving the correlation (if assume centering in the feature space). 
+%  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$ columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
 
-This paper shows (Proof shown later):
-\begin{align}
-B^TB \prec A^TA \quad \text{and} \quad || A^TA-B^TB || \leq 2||A||_f^2/\ell \nonumber
-\end{align}
-\end{itemize}
-\end{frame}
+%This paper shows (Proof shown later):
+%\begin{align}
+%B^TB \prec A^TA \quad \text{and} \quad || A^TA-B^TB || \leq 2||A||_f^2/\ell \nonumber
+%\end{align}
+%\end{itemize}
+%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-\begin{frame}{Related work}
-\begin{itemize}
-\item 
-\end{itemize}
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -116,18 +111,7 @@ B^TB \prec A^TA \quad \text{and} \quad || A^TA-B^TB || \leq 2||A||_f^2/\ell \non
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{frame}{The proposed \textit{Frequent-directions} algorithm}
-\begin{itemize}
-\item It allows for the process to be inverted
-\begin{itemize}
-\item Prescribe the threshold $t$ in advance and find the space spanned by all
-vectors $x$, such that $\vectornorm{Ax} \geq t$.
-\item In this setting, computing the SVD is not necessary anymore!
-\end{itemize}
-\end{itemize}
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -188,16 +172,48 @@ Sampling in the context of the \textit{Column Subset Selection Problem}:
    their squared $\ell_{2}$ norm
    \end{itemize}
 \end{itemize}
-
-\framebreak
-
-Frequent-directions:
-\begin{itemize}
-  \item
-\end{itemize}
-
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks=1]{The \textit{Frequent-directions} algorithm}
+\begin{itemize}
+  \item It allows for the process to be inverted
+  \begin{itemize}
+    \item Prescribe the threshold $t$ in advance and find the space spanned by all
+vectors $x$, such that $\vectornorm{Ax} \geq t$.
+    \item In this setting, computing the SVD is not necessary anymore!
+   \end{itemize}
+\end{itemize}
+
+\framebreak
+Represent the frequency of a row (direction):
+\begin{itemize}
+  \item Assume rows of $A$ are indicate vectors of the items: \\
+  \begin{center}
+  \vspace{2 mm}
+  $A = \begin{pmatrix}
+       1 & 0 & 0 & 0\\[0.3em] 
+       0 & 1 & 0 & 0\\[0.3em]
+       0 & 0 & 1 & 0\\[0.3em]
+       0 & 1 & 0 & 0
+     \end{pmatrix}$
+  \end{center}
+  \item Frequency of second item $e_2 = (0,1,0,0)^T$:
+  $ \vectornorm{Ae_2}^2 = \vectornorm{(0,1,0,1)^T} ^2= 0^2 + 1^2 + 0^2 + 1^2 = 2$. 
+  \item Generalize the rows (directions) to $\{x : \vectornorm{x}=1\} $ and the frequency of a direction is $\vectornorm{Ax}^2$.
+\end{itemize}
+
+\framebreak
+Connection to SVD of $A$:
+\begin{itemize}
+  \item $A = U\Sigma V^T \Leftrightarrow U^TA = \Sigma V^T \Leftrightarrow Au = \sigma v$.
+  \item $\vectornorm{Au}^2 = \vectornorm{\sigma v}^2 = \sigma^2$.
+\end{itemize}
+Change $u$ to $x$: the frequency of a direction $x$ is the square of corresponding singular value $\sigma^2$! \\
+  \vspace{2 mm}
+Finding $\ell$ most frequent directions is transferred to finding $\ell$ most frequent sigular values.
+\end{frame}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
