@@ -226,6 +226,7 @@ The algorithm:
     \State Insert $i^{th}$ row of $A$ into zero valued row of $B$
     \If {$B$ has no zero valued rows}
       \State $[U,\Sigma,V] \leftarrow SVD(B)$
+      \textcolor{gray}{\State $C \leftarrow \Sigma V^T$ // for proof}
       \State $\delta \leftarrow \sigma_{\ell/2}^2$
       \State $\breve{\Sigma} \leftarrow \sqrt{\max(\Sigma^2-I_\ell\delta,0)}$
       \State $B\leftarrow \breve{\Sigma}V^T$
@@ -234,6 +235,26 @@ The algorithm:
   \end{algorithmic}
 \end{frame}
 
+\begin{frame}[allowframebreaks=1]{Properties of the sketch matrix $B$}
+  \vspace{2 mm}
+1. $A^TA \succeq B^TB \succeq 0$. 
+\footnotesize
+\begin{proof}
+  \begin{flalign}
+   & B^TB \succeq 0 \Leftrightarrow x^TB^TBx \geq 0 \Leftrightarrow \vectornorm{Bx}^2 \geq 0. && \\
+   & A^TA \succeq B^TB  \Leftrightarrow x^T(A^TA-B^TB)x \geq 0 \Leftrightarrow \vectornorm{Ax}^2 -\vectornorm{Bx}^2 \geq 0 &&
+  \end{flalign}  
+  \begin{flalign}
+    \vectornorm{Ax}^2 -\vectornorm{Bx}^2 &= \sum_{i=1}^n[\langle A_i, x \rangle^2 + \vectornorm{B^{i-1}x}^2 - \vectornorm{B^{i}x}^2] \nonumber &&\\
+    &= \sum_{i=1}^n[\vectornorm{C^ix}^2 - \vectornorm{B^{i}x}^2]= \sum_{i=1}^n[x^T(C^{i^T}C^i-B^{i^T}B^i)x] \nonumber &&\\
+    &= \sum_{i=1}^n[x^T(V\Sigma^T\Sigma V^T-V\breve{\Sigma}^T\breve{\Sigma} V^T)x] 
+    = \sum_{i=1}^n[x^TV(\Sigma^2 -\breve{\Sigma}^2)V^Tx] \geq 0 && \nonumber
+  \end{flalign}
+\end{proof}
+
+\framebreak
+
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
