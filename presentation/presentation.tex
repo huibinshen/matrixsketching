@@ -10,6 +10,19 @@
 \usepackage{lastpage}
 \usepackage{subfigure}
 \usepackage{algpseudocode}
+%\usepackage{xcolor}
+
+\definecolor{gold}{rgb}{0.3, 0.4, .1}
+\definecolor{fore}{RGB}{249,242,215}
+\definecolor{lgray}{RGB}{25, 25, 25}
+\definecolor{back}{RGB}{51,51,51}
+\definecolor{title}{RGB}{255,0,90}
+\definecolor{dgreen}{rgb}{0.,0.6,0.}
+\definecolor{gold}{rgb}{1.,0.84,0.}
+\definecolor{JungleGreen}{cmyk}{0.99,0,0.52,0}
+\definecolor{gold}{cmyk}{0.85,0,0.33,0}
+\definecolor{RawSienna}{cmyk}{0,0.72,1,0.45}
+\definecolor{Magenta}{cmyk}{0,1,0,0}
 
 \title{Simple and Deterministic Matrix Sketching}
 
@@ -21,6 +34,9 @@ Aalto University, School of Science and Technology}
 
 %\date{}
 \newcommand{\vectornorm}[1]{\left\|#1\right\|}
+\newcommand{\IndState}{\State\hspace{\algorithmicindent}}
+
+\everymath\expandafter{\the\everymath \color{blue}}
 
 \begin{document}
 
@@ -173,6 +189,102 @@ Sampling in the context of the \textit{Column Subset Selection Problem}:
    their squared $\ell_{2}$ norm
    \end{itemize}
 \end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks=1]{Item frequency estimation}
+\begin{itemize}
+    \item Used to uncover \textcolor{gold}{frequent} iteams in an item stream 
+	\item Referred to as \textcolor{gold}{\textit{Frequent-items}}
+	\item \textbf{Goal:} use $O(\ell)$ space to produce estimates $g_{j}$, such
+	that
+	\begin{itemize}\item{$|f_{j} - g_{j} | \leq n/l$}, for all $j$
+	\textcolor{red}{simultaneously}\end{itemize}
+
+\item The algorithm:
+  \begin{algorithmic}
+    \State \textbf{Input}: \textcolor{dgreen}{items} $a_{1}$, $a_{2}$, \ldots,
+    $a_{m}$
+    \IndState \textcolor{dgreen}{item appearances} $A_{1}$, $A_{2}$, \ldots,
+    $A_{n}$
+    \\\State \textbf{Repeat} until there are \textcolor{red}{less than}
+    $\ell$ \textcolor{gold}{unique} items left \{
+     \IndState Simulate a process of
+     \textcolor{red}{\textit{'deleting'}} of $\ell$ appearances of
+     \IndState \textcolor{gold}{different} items from the stream
+    \State \}
+  \end{algorithmic}
+\end{itemize}
+
+%   \begin{itemize}
+%      \item The \textcolor{red}{trimmed} stream can be stored
+%      \textcolor{gold}{concisely} in $O(\ell)$ space
+%   \end{itemize}
+
+\framebreak
+
+\textbf{Claim:}
+
+\begin{itemize}
+\item \textbf{If} item $a_{j}$ appears in the \textcolor{gold}{final} trimmed
+stream $g_{j}$ times
+\begin{itemize}
+  \item \textbf{Then} $g_{j}$ is a \textcolor{red}{good approximation} for its
+  true frequency $f_{j}$ (even in the case of $g_{j}$ = 0).
+\end{itemize}         
+\end{itemize}
+
+\textbf{Proof:}
+\begin{itemize}
+   \item Each item-type is deleted \textcolor{gold}{at most} once per iteration:
+   \begin{itemize} \item $f_{j} - g_{j} \leq t$, where $t$ is the
+   number of deleted items.\end{itemize}
+\end{itemize}
+
+\framebreak
+
+\textbf{Proof (cont.):}
+
+\begin{itemize}
+   \item \textcolor{gray}{Each item-type is deleted gold at most
+   once per iteration:}
+   \begin{itemize} \item \textcolor{gray}{$f_{j} - g_{j} \leq t$, where $t$ is
+   the number of deleted items.}\end{itemize}
+   \item $\ell$ items are deleted in every batch, and the total number of
+   deleted items is upper-bounded by $n$, therefore:
+   \begin{itemize} \item $t\ell \leq n$, or $t \leq n/\ell$.\end{itemize} 
+\end{itemize}
+
+\begin{itemize}
+  \item If one sets $\ell > 1/\epsilon$,
+  \begin{itemize} \item Then any item that appears more than
+  $\epsilon n$ times in the stream \textcolor{gold}{must} appear in
+  the final sketch.\end{itemize}
+\end{itemize}
+  
+\end{frame}
+
+\begin{frame}[allowframebreaks=1]{\textit{Frequent-items} in matrix sketching}
+
+\begin{itemize}
+  \item \textbf{Input:} matrix $A$, consisting of a stream of
+  \textcolor{gold}{rows} $A_{i}$,
+  	\begin{itemize}\item where $A_{i} \in \{ e_{1}, \ldots, e_{m} \}$, for
+  	$e_{j}$ being the $j$th \textcolor{gold}{standard basis} vector
+  	
+  	\item $A_{j} = e_{j}$, if the $i$th row of the matrix
+  	\item Frequency: $f_{j} = \vectornorm{Ae_{j}}^{2}$\\
+  \end{itemize}
+  \item \textbf{Output:} $g_{j} = \vectornorm{Be_{j}}^{2}$, which is a
+  	\textcolor{red}{good approximation} to $f_{j}$
+  \begin{itemize}\item Let $n = \vectornorm{A}_{f}^{2}$, then $|f_{j} -
+  g_{j}| \leq n / \ell$, which is equivalent to
+  \begin{itemize}\item $\vectornorm{Ae_{j}}^{2} -
+  \vectornorm{Be_{j}}^{2} \leq \vectornorm{A}_{j}^{2} / \ell$\end{itemize}
+  \end{itemize}
+\end{itemize}
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
