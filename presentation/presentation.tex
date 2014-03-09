@@ -257,9 +257,9 @@ stream $g_{j}$ times
 \end{itemize}
 
 \begin{itemize}
-  \item If one sets $\ell > 1/\epsilon$,
+  \item If one sets $\ell > 1/\varepsilon$,
   \begin{itemize} \item Then any item that appears more than
-  $\epsilon n$ times in the stream \textcolor{gold}{must} appear in
+  $\varepsilon n$ times in the stream \textcolor{gold}{must} appear in
   the final sketch.\end{itemize}
 \end{itemize}
   
@@ -283,6 +283,81 @@ stream $g_{j}$ times
   \begin{itemize}\item $\vectornorm{Ae_{j}}^{2} -
   \vectornorm{Be_{j}}^{2} \leq \vectornorm{A}_{j}^{2} / \ell$\end{itemize}
   \end{itemize}
+\end{itemize}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[allowframebreaks=1]{Connection to \textit{sampling}}
+
+\begin{itemize}
+   \item \textcolor{red}{All} frequencies can be approximated from a
+   \textcolor{gold}{uniform} sample of the stream
+   \item using \textit{Chernoff's bound}, and then applying the \textit{union
+   bound}
+   \item $O(r\log{(r)}/\varepsilon^{2})$ samples suffice to ensure that
+   \begin{itemize}
+     \item $|f_{i} - g_{i}| \leq \varepsilon f_{\text{max}}$,
+     \item where $r = n / f_{\text{max}}$
+   \end{itemize}
+\end{itemize}
+
+\framebreak
+
+\begin{itemize}
+   \item \textcolor{red}{Sketching} by row sampling requires
+   $O(r\log{(r)}/\varepsilon^{2})$ row samples,
+   \begin{itemize}
+     \item where $r = \vectornorm{A}_{f}^{2} /
+   \vectornorm{A}_{2}^{2}$.
+   	 \item This guarantees that $\vectornorm{A^{T}A - B^{T}B} \leq \varepsilon
+   \vectornorm{A^{T}A}$.
+   \end{itemize}
+   \item \textbf{Note:} The matrix sampling result \textcolor{gold}{implies} the
+   item sampling algorithm
+   \item \emph{Because running the matrix sampling algorithm on an item
+   indicator matrix (as before) produces uniform random samples.}
+   \begin{itemize}
+   \item We have $r = \vectornorm{A}_{f}^{2} / \vectornorm{A}_{2}^{2} =
+   f_{\text{max}} / n$, and
+   \item $f_{\text{max}} = \vectornorm{A^{T}A}$.\end{itemize}
+   \item \textit{Frequent-directions} \textcolor{red}{improves} on matrix
+   sampling
+   \begin{itemize} \item in the \textcolor{gold}{same way} that
+   \textit{Frequent-items} improves on item sampling.\end{itemize}
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[allowframebreaks=1]{Connection to \textit{low-rank approximation}}
+
+\begin{itemize}
+   \item The goal is to obtain a \textcolor{red}{small} matrix $B$,
+   \begin{itemize}
+     \item consisting of $\ell$ rows, that contains in its row space
+   	 \item a projection matrix $\Pi_{B,\xi}^{A}$ of rank $k$ such that 
+   	 \begin{itemize}
+   	   \item $\vectornorm{A - A\Pi_{B,\xi}^{A}}_{\xi} \leq (1+\varepsilon)
+   	   \vectornorm{A - A_{k}}_{\xi}$, 
+
+   	     	\item where $A_{k}$ is the \textcolor{red}{best}
+   	   rank-$k$ approximation of $A$, and
+   	   		\item $\xi$ is either $2$ or $f$\emph{(i.e. either the spectral norm or
+   	   the Frobenius norm)}.
+   	 \end{itemize}
+   \end{itemize}
+   \item \textbf{Note:} \textit{Frequent-directions} can be used to
+   \textcolor{red}{produce} a low-rank approximation result.
+   \begin{itemize} \item \textit{Lemma 4} from a modified version
+   of [12].\end{itemize}
+\end{itemize}
+
+\framebreak
+
+\textbf{Lemma: }
+\begin{itemize}
+    \item \ldots
 \end{itemize}
 
 \end{frame}
