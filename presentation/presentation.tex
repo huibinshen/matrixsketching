@@ -427,16 +427,16 @@ The algorithm:
 1. $A^TA \succeq B^TB \succeq 0$. 
 \footnotesize
 \begin{proof}
-  \begin{flalign}
+  {\color{blue}\begin{flalign}
    & B^TB \succeq 0 \Leftrightarrow x^TB^TBx \geq 0 \Leftrightarrow \vectornorm{Bx}^2 \geq 0. && \nonumber \\
    & A^TA \succeq B^TB  \Leftrightarrow x^T(A^TA-B^TB)x \geq 0 \Leftrightarrow \vectornorm{Ax}^2 -\vectornorm{Bx}^2 \geq 0. \nonumber &&
-  \end{flalign}  
-  \begin{flalign}
+  \end{flalign}}
+  {\color{blue}\begin{flalign}
     \vectornorm{Ax}^2 -\vectornorm{Bx}^2 &= \sum_{i=1}^n[\langle A_i, x \rangle^2 + ||B^{i-1}x||^2 - ||B^{i}x||^2] \nonumber &&\\
     &= \sum_{i=1}^n[||C^ix||^2 - ||B^{i}x||^2]= \sum_{i=1}^n[x^T(C^{i^T}C^i-B^{i^T}B^i)x] \nonumber &&\\
     &= \sum_{i=1}^n[x^T(V\Sigma^T\Sigma V^T-V\breve{\Sigma}^T\breve{\Sigma} V^T)x] 
     = \sum_{i=1}^n[x^TV(\Sigma^2 -\breve{\Sigma}^2)V^Tx] \geq 0. && \nonumber
-  \end{flalign}
+  \end{flalign}}
 \end{proof}
 
 
@@ -447,14 +447,14 @@ The algorithm:
 2. $ ||A^TA - B^TB || \leq 2|| A||_f^2/\ell$. 
 \footnotesize
 \begin{proof}
-  \begin{flalign}
+  {\color{blue}\begin{flalign}
     &||A^TA - B^TB || \leq \sum_{i=1}^n\delta_i \leq 2||A||_f^2/\ell. && \nonumber  
-  \end{flalign}
-  \begin{flalign}
+  \end{flalign}}
+  {\color{blue}\begin{flalign}
     ||A^TA - B^TB || &= \sigma_{max}(A^TA - B^TB) = x^T(A^TA-B^TB)x = \vectornorm{Ax}^2 -\vectornorm{Bx}^2  \nonumber && \\
     &= \sum_{i=1}^n[||C^ix||^2 - ||B^{i}x||^2] \leq \sum_{i=1}^n[||C^{i^T}C^i - B^{i^T}B^i||] && \nonumber \\
     &= \sum_{i=1}^n[||V(\Sigma^2 -\breve{\Sigma}^2) V^T||] =  \sum_{i=1}^n \delta_i. \nonumber && 
-  \end{flalign}
+  \end{flalign}}
 \end{proof}
 
 \framebreak
@@ -467,14 +467,14 @@ The algorithm:
 %  \begin{flalign}
 %    &||A^TA - B^TB || \leq \sum_{i=1}^n\delta_i \leq 2||A||_f^2/\ell. && \nonumber 
 %  \end{flalign}
-  \begin{flalign}
+  {\color{blue}\begin{flalign}
     ||B^n||_f^2 &= \sum_{i=1}^n[||B^{i-1}x||_f^2 - ||B^{i}||_f^2] = \sum_{i=1}^n[(||C^i||_f^2 - ||B^{i-1}x||_f^2) - (||C^i||_f^2 - ||B^{i}||_f^2)]. && \nonumber \\
      &= \sum_{i=1}^n ||A_i||_f^2 - tr(C^{i^T}C^i - B^{i^T}B^i) = ||A||_f^2 - \sum_{i=1}^ntr(V(\Sigma^{i^2} -\breve{\Sigma}^{i^2}) V^T) && \nonumber \\
      &= ||A||_f^2 - \sum_{i=1}^ntr(\Sigma^{i^2} -\breve{\Sigma}^{i^2}) \leq ||A||_f^2 - (\ell/2)\sum_{i=1}^n\delta_i \nonumber.
-  \end{flalign}
-  \begin{flalign}
+  \end{flalign}}
+  {\color{blue}\begin{flalign}
     \sum_{i=1}^n\delta_i \leq 2(||A||_f^2 - ||B||_f^2)/\ell \leq 2||A||_f^2/\ell. && \nonumber
-  \end{flalign}
+  \end{flalign}}
 \end{proof}
 \normalsize
 
@@ -487,9 +487,9 @@ In summary:
   \item $ ||A^TA - B^TB || \leq 2|| A||_f^2/\ell$. 
   \vspace{2 mm}
   \item Let $A = [A_1;A_2]$ and $B_1$, $B_2$ is the sketches of $A_1$ and $A_2$. A sketch $C$ of $B=[B_1;B_2]$ can be shown that (proof omitted):\\
-  \begin{align}
+  {\color{blue}\begin{align}
     ||A^TA - C^TC || \leq 2|| A||_f^2/\ell. \nonumber 
-  \end{align}
+  \end{align}}
 \end{itemize}
 \end{frame}
 
