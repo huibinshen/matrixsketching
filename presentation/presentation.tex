@@ -493,12 +493,40 @@ In summary:
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Experiments}
+\begin{frame}[allowframebreaks=1]{Experiments}
+Synthetic data $A \in \mathbb{R}^{n\times m}$
+\begin{itemize}
+  \item $A = SDU + N/\zeta$.
+  \item $S \in \mathbb{R}^{n\times d},\quad S_{i,j} \sim \mathcal{N}(0,1)$.
+  \item $D \in \mathbb{R}^{d\times d},\quad D_{i,i} = 1 - (i-1)/d$.
+  \item $U \in \mathbb{R}^{d\times m}, \quad UU^T=I_d$.
+  \item $c_1 \leq \zeta \leq c_2, \quad c_1 \approx 1,c_2 \approx 1$.
+\end{itemize}
+$A$ contains $d$ dimensional signal and $m$ dimensional noise, and is recoverable by spectral methods \cite{Vershynin11}.
 
+
+\framebreak
+Error against sketch size with $n=10000, m=1000, d=50$.
+\begin{figure}
+  \includegraphics[scale=0.6]{plots/acc}
+ \label{fig:fp}
+\end{figure}
+
+\framebreak
+Running time. \\
+Left figure shows comparison with other techniques and right figure shows the linear behaviour in $n$ and $m$.
+\begin{figure}
+  \subfigure{\includegraphics[scale=0.35]{plots/time1}}
+  \subfigure{\includegraphics[scale=0.35]{plots/time2}}
+ \label{fig:fgtree}
+\end{figure}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\bibliographystyle{plain}
+\begin{frame}{Reference}
+\bibliography{presenation}
+\end{frame}
 
 \end{document}
