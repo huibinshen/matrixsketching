@@ -53,4 +53,6 @@ end
 %x = [1,2;3,4;5,6;7,8]
 %createSketch(2,x)
 
-
+% nCols = 20;   %# A random integer between 10 and 20
+% nRows = nCols*50;         %# Number of rows is a multiple of number of columns
+% mat = rand(nRows,nCols);  %# A matrix of random values between 0 and 1

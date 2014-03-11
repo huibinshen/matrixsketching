@@ -44,15 +44,17 @@ Aalto University, School of Science and Technology}
 
 \aaltotitleframe
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Background section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}{Content}
 \begin{itemize}
-\item Background.
-\item Related work.
-\item Frequent directions.
-\item Experiments and Results.
-\item Conclusion.
+\item Background
+\item \textcolor{gray}{Related work}
+\item \textcolor{gray}{Frequent directions}
+\item \textcolor{gray}{Experiments and Results}
+\item \textcolor{gray}{Conclusion}
 \end{itemize}
 \end{frame}
 
@@ -108,7 +110,7 @@ Aalto University, School of Science and Technology}
   \begin{itemize}
     \item Textual data in the bag-of-words model \emph{(Where the rows
     correspond to documents)}
-    \item Large-scale image analysis \emph{(Each row correspnds to one image,
+    \item Large-scale image analysis \emph{(Each row corresponds to one image,
     and contains either pixel values, or other derived feature values)}
   \end{itemize}
   \item Low rank approximations are used in PCA, LSI, $k$-means clustering
@@ -145,7 +147,20 @@ once. \emph{(further, storage is severely limited)}
 
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Related work section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Content}
+\begin{itemize}
+\item \textcolor{gray}{Background}
+\item Related work
+\item \textcolor{gray}{Frequent directions}
+\item \textcolor{gray}{Experiments and Results}
+\item \textcolor{gray}{Conclusion}
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}[allowframebreaks=1]{Existing approaches}
 There are three main approaches:
@@ -191,11 +206,24 @@ Sampling in the context of the \textit{Column Subset Selection Problem}:
 \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Frequent directions section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}{Content}
+\begin{itemize}
+\item \textcolor{gray}{Background}
+\item \textcolor{gray}{Related work}
+\item Frequent directions
+\item \textcolor{gray}{Experiments and Results}
+\item \textcolor{gray}{Conclusion}
+\end{itemize}
+\end{frame}
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
 \begin{itemize}
-    \item Used to uncover \textcolor{gold}{frequent} iteams in an item stream 
+    \item Used to uncover \textcolor{gold}{frequent} items in an item stream 
 	\item Referred to as \textcolor{gold}{\textit{Frequent-items}}
 	\item \textbf{Goal:} use $O(\ell)$ space to produce estimates $g_{j}$, such
 	that
@@ -402,7 +430,7 @@ Connection to SVD of $A$:
 Change $u$ to $x$: \\
   \vspace{2 mm}
 
-The frequency of a direction is indicated by the square of corresponding sigular value $\sigma^2$.
+The frequency of a direction is indicated by the square of corresponding singular value $\sigma^2$.
 
 \framebreak
 The algorithm:
@@ -493,6 +521,21 @@ In summary:
 \end{itemize}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Experiment section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Content}
+\begin{itemize}
+\item \textcolor{gray}{Background}
+\item \textcolor{gray}{Related work}
+\item \textcolor{gray}{Frequent directions}
+\item Experiments and Results
+\item \textcolor{gray}{Conclusion}
+\end{itemize}
+\end{frame}
+
+
 \begin{frame}[allowframebreaks=1]{Experiments}
 Synthetic data $A \in \mathbb{R}^{n\times m}$
 \begin{itemize}
@@ -514,12 +557,43 @@ Error against sketch size with $n=10000, m=1000, d=50$.
 
 \framebreak
 Running time. \\
-Left figure shows comparison with other techniques and right figure shows the linear behaviour in $n$ and $m$.
+Left figure shows comparison with other techniques and right figure shows the linear behavior in $n$ and $m$.
 \begin{figure}
   \subfigure{\includegraphics[scale=0.35]{plots/time1}}
   \subfigure{\includegraphics[scale=0.35]{plots/time2}}
  \label{fig:fgtree}
 \end{figure}
+\end{frame}
+
+\begin{frame}[allowframebreaks=1]{More experiments}
+\begin{figure}
+  \includegraphics[scale=0.6]{plots/data_and_sketch}
+ \label{fig:fp}
+\end{figure}
+
+\framebreak
+Why that:\\
+{\color{blue}\begin{flalign}
+  A^TA = \begin{pmatrix}
+       1.2485 & 0.0026 \\[0.3em] 
+       0.0026 & 1.2638
+     \end{pmatrix} \nonumber
+\end{flalign}}
+  Let $\hat{B} = B(1:2,1:2)$ \\
+{\color{blue}\begin{flalign}
+  \hat{B}^T\hat{B} = \begin{pmatrix}
+       1.2214 & 0.0051 \\[0.3em] 
+       0.0051 & 1.2369
+     \end{pmatrix} \nonumber
+\end{flalign}}
+\end{frame}
+
+\begin{frame}{Conclusion}
+\begin{itemize}
+  \item In terms of $|| A^TA - B^TB||$, the proposed sketching algorithm is more accurate than sampling, hashing and random projections.
+  \item The proposed algorithm runs reasonably fast, faster than random projection, slower than sampling.
+  \item The proposed algorithm is linear in the scale of the input size.
+\end{itemize}
 \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

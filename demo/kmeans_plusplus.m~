@@ -1,0 +1,3 @@
+function kmeans_plusplus()
+  A = dlmread('example_2d.txt');
+  
