@@ -3,9 +3,9 @@ function B = createSketch(l, A)
 	B = zeros(l, m);
 	
 	for i = 1 : n
+		i,B
 		B_hasZeroRows = false;
 		indZeroRow = -1;
-		
 		for j = 1 : l
 			%if (sum(B(j, :)) == 0)
 			if 1 && all(B(j,:)==0)
@@ -21,17 +21,16 @@ function B = createSketch(l, A)
 			[U, S, V] = svd(B);
 			diagS = diag(S);
 			
-			%if (l <= m)
-			%	delta = diagS(l / 2) ^ 2;
-			%else
-			%	delta = diagS(ceil(m / 2)) ^ 2;
-			%end
-			if ceil(l/2)+1 <= length(diagS)
-				delta = diagS(ceil(l / 2)+1) ^ 2;
+			if (l <= m)
+				delta = diagS(ceil(l / 2)) ^ 2;
 			else
-				delta = 0;
-			end			
-
+				delta = diagS(ceil(m / 2)) ^ 2;
+			end
+			%if ceil(l/2)+1 <= length(diagS)
+			%	delta = diagS(ceil(l / 2)+1) ^ 2;
+			%else
+			%	delta = 0;
+			%end			
 			I_l = eye(l);
 			
 			if (l >= m)
@@ -40,11 +39,21 @@ function B = createSketch(l, A)
 				d = m - l;
 				I_delta = [I_l, zeros(l, d)];
 			end
-
-			I_delta = I_delta .* delta;
+                        
+			I_delta = I_delta .* delta
 			S_check = sqrt(max((S .^ 2) - I_delta, 0));
 			%B = S_check * V;
 			B = S_check * V';
+
+			for j = 1 : l
+				%if (sum(B(j, :)) == 0)
+				if 1 && all(B(j,:)==0)
+					B_hasZeroRows = true;
+					indZeroRow = j;
+					break;
+				end
+			end
+			B(indZeroRow, :) = A(i, :);
 		end
 	end
 end
