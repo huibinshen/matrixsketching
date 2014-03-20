@@ -15,11 +15,11 @@
 \definecolor{dgreen}{rgb}{0.,0.6,0.}
 
 
-\title{Simple and Deterministic Matrix Sketching}
+\title{Simple and Deterministic Matrix Sketching\footnote{Authored by Edo Liberty and and won the \textit{KDD-2013 best paper} award\cite{Liberty13}.}}
 
 \author[H. Georgiev and H. Shen]{Hristo Georgiev and Huibin Shen}
 \institute[ICS]{Department of Information and Computer Science\\
-Aalto University, School of Science and Technology}
+Aalto University, School of Science}
 
 \aaltofootertext{H. Georgiev and H. Shen}{T-61.6020}{\arabic{page}/\pageref{LastPage}\ }
 
@@ -185,32 +185,109 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}.
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
 \begin{itemize}
-    \item Used to uncover \textcolor{dgreen}{frequent} items in an item stream 
+    \item Used to uncover \textcolor{dgreen}{frequent} items in an item stream
+    \item (Re-)Invented (at least!) four times \cite{Misra82, Demaine02, Karp03, Metwally05}
 	\item Referred to as \textcolor{dgreen}{\textit{Frequent-items}}
+\end{itemize}
+\begin{itemize}
 	\item \textbf{Goal:} use $O(\ell)$ space to produce estimates $g_{j}$, such
 	that
-	\begin{itemize}\item{$|f_{j} - g_{j} | \leq n/l$}, for all $j$
-	\textcolor{red}{simultaneously}\end{itemize}
-
-\item The algorithm:
-  \begin{algorithmic}
-    \State \textbf{Input}:\begin{itemize}\item \textcolor{dgreen}{items} $a_{1}$, $a_{2}$, \ldots,
-    $a_{m}$
-    \item \textcolor{dgreen}{item appearances} $A_{1}$, $A_{2}$, \ldots,
-    $A_{n}$\end{itemize}
-    \\\State \textbf{Repeat} until there are \textcolor{red}{less than}
-    $\ell$ \textcolor{dgreen}{unique} items left \{
-     \begin{itemize}\item Simulate a process of
-     \textcolor{red}{\textit{'deleting'}} of $\ell$ appearances of
-     \textcolor{dgreen}{different} items from the stream\end{itemize}
-    \State \}
-  \end{algorithmic}
+	\begin{itemize}
+		\item{$|f_{j} - g_{j} | \leq n/l$}, for all $j$ \textcolor{red}{simultaneously}
+	\end{itemize}
 \end{itemize}
 
-%   \begin{itemize}
-%      \item The \textcolor{red}{trimmed} stream can be stored
-%      \textcolor{dgreen}{concisely} in $O(\ell)$ space
-%   \end{itemize}
+\framebreak
+
+\begin{itemize}
+	\item The algorithm:
+	\begin{algorithmic}
+		\State \textbf{Input}:\begin{itemize}\item $d$ \textcolor{dgreen}{items} $a_{1}$, $a_{2}$, \ldots,
+		$a_{d}$
+		\item $n$ \textcolor{dgreen}{item appearances} $A_{1}$, $A_{2}$, \ldots,
+		$A_{n}$\end{itemize}
+		\\\State \textbf{Repeat} until there are \textcolor{red}{less than}
+		$\ell$ \textcolor{dgreen}{unique} items left \{
+		\begin{itemize}
+			\item \textcolor{red}{Get} item $A_{j}$ from stream, for $j = 1 \ldots n$
+		\end{itemize}
+		\begin{itemize}
+			\item \textcolor{blue}{\textit{If}} there are free slots among $\ell$
+			\begin{itemize}\item \textcolor{red}{Create} new bucket for item type $k$ and \textcolor{red}{store} the item there\end{itemize}
+			\item \textcolor{blue}{\textit{Else}}
+				\begin{itemize}
+					\item \textcolor{red}{Find} \textcolor{dgreen}{median} count $\delta = f_{\ell/2}$
+					of items, and
+					\item \textcolor{red}{Remove} exactly $\min{(\delta, f_{i})}$ appearances from each bucket $i = 1 \ldots \ell$
+				\end{itemize}
+		\end{itemize}
+		\State \}
+	\end{algorithmic}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks=1]{Item frequency estimation}
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi1}
+	\label{fig:fi1}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi2}
+	\label{fig:fi2}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi3}
+	\label{fig:fi3}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi4}
+	\label{fig:fi4}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi6}
+	\label{fig:fi5}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi7}
+	\label{fig:fi7}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi8}
+	\label{fig:fi8}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi9}
+	\label{fig:fi9}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+	\includegraphics[scale=0.5]{frequent-items/fi10}
+	\label{fig:fi10}
+\end{figure}
 
 \framebreak
 
@@ -348,18 +425,18 @@ stream $g_{j}$ times
 \begin{frame}[allowframebreaks=1]{The \textit{Frequent-directions} algorithm}
 
 \begin{itemize}
-  \item It allows for the process to be inverted
+  \item It allows for the process to be \textcolor{red}{inverted}
   \begin{itemize}
-    \item Prescribe the threshold $t$ in advance and find the space spanned by all
+    \item Prescribe the threshold $t$ \textcolor{dgreen}{in advance} and find the space spanned by all
 vectors $x$, such that $\vectornorm{Ax} \geq t$.
-    \item In this setting, computing the SVD is not necessary anymore!
+    \item In this setting, computing the SVD is \textcolor{red}{not necessary} anymore!
    \end{itemize}
 \end{itemize}
 
 \framebreak
-Represent the frequency of a row (direction):
+Represent the \textcolor{dgreen}{frequency} of a row (direction):
 \begin{itemize}
-  \item Assume rows of $A$ are indicate vectors of the items: \\
+  \item Assume rows of $A$ are \textcolor{red}{indicator vectors} of the items: \\
   \begin{center}
   \vspace{2 mm}
   $A = \begin{pmatrix}
@@ -371,7 +448,7 @@ Represent the frequency of a row (direction):
   \end{center}
   \item Frequency of second item $e_2 = (0,1,0,0)^T$:
   $ \vectornorm{Ae_2}^2 = \vectornorm{(0,1,0,1)^T} ^2= 0^2 + 1^2 + 0^2 + 1^2 = 2$. 
-  \item Generalize the rows (directions) to $\{x : \vectornorm{x}=1\} $ and the frequency of a direction is $\vectornorm{Ax}^2$.
+  \item Generalize the rows (directions) to $\{x : \vectornorm{x}=1\} $ and the \textcolor{dgreen}{frequency} of a direction is $\vectornorm{Ax}^2$.
 \end{itemize}
 
 \framebreak
@@ -384,7 +461,7 @@ Connection to SVD of $A$:
 Change $u$ to $x$: \\
   \vspace{2 mm}
 
-The frequency of a direction is indicated by the square of corresponding singular value $\sigma^2$.
+The \textcolor{dgreen}{frequency} of a direction is indicated by the square of corresponding singular value $\sigma^2$.
 
 \framebreak
 The algorithm:
@@ -550,16 +627,25 @@ Why that:\\
 
 \end{frame}
 
+%\begin{frame}{What has been omitted from the presentation}
+%
+%\begin{itemize}
+	%\item using \textcolor{red}{\textit{Frequent-directions}} to produce \textcolor{dgreen}{low rank approximations}
+%\end{itemize}
+	%\item proof for the \textit{red}{sketching of sketches} property
+%
+%\end{frame}
+
 \begin{frame}{Conclusion}
 \begin{itemize}
-  \item In terms of $|| A^TA - B^TB||$, the proposed sketching algorithm is more accurate than sampling, hashing and random projections.
-  \item The proposed algorithm runs reasonably fast, faster than random projection, slower than sampling.
-  \item The proposed algorithm is linear in the scale of the input size.
+  \item In terms of $|| A^TA - B^TB||$, the proposed sketching algorithm is \textcolor{red}{more accurate} than sampling, hashing and random projections.
+  \item The proposed algorithm runs reasonably fast, \textcolor{red}{faster} than random projection, slower than sampling.
+  \item The proposed algorithm is \textcolor{red}{linear} in the scale of the input size.
 \end{itemize}
 \end{frame}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \bibliographystyle{plain}
 \begin{frame}{References}
 \small
