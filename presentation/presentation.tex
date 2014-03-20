@@ -10,10 +10,17 @@
 \usepackage{lastpage}
 \usepackage{subfigure}
 \usepackage{algpseudocode}
-%\usepackage{xcolor}
+\usepackage{xcolor}
 
 \definecolor{dgreen}{rgb}{0.,0.6,0.}
 
+\newcommand\overmat[2]{%
+  \makebox[0pt][l]{$\smash{\color{white}\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{\color{black}#1}}}$}#2}
+\newcommand\bovermat[2]{%
+  \makebox[0pt][l]{$\smash{\overbrace{\phantom{%
+    \begin{matrix}#2\end{matrix}}}^{\text{#1}}}$}#2}
+\newcommand\partialphantom{\vphantom{\frac{\partial e_{P,M}}{\partial w_{1,1}}}}
 
 \title{Simple and Deterministic Matrix Sketching\footnote{Authored by Edo Liberty and and won the \textit{KDD-2013 best paper} award\cite{Liberty13}.}}
 
@@ -228,68 +235,6 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}.
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
 
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi1}
-	\label{fig:fi1}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi2}
-	\label{fig:fi2}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi3}
-	\label{fig:fi3}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi4}
-	\label{fig:fi4}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi6}
-	\label{fig:fi5}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi7}
-	\label{fig:fi7}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi8}
-	\label{fig:fi8}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi9}
-	\label{fig:fi9}
-\end{figure}
-
-\framebreak
-
-\begin{figure}
-	\includegraphics[scale=0.5]{frequent-items/fi10}
-	\label{fig:fi10}
-\end{figure}
-
-\framebreak
 
 \textbf{Claim:}
 
@@ -424,19 +369,19 @@ stream $g_{j}$ times
 
 \begin{frame}[allowframebreaks=1]{The \textit{Frequent-directions} algorithm}
 
-\begin{itemize}
-  \item It allows for the process to be \textcolor{red}{inverted}
-  \begin{itemize}
-    \item Prescribe the threshold $t$ \textcolor{dgreen}{in advance} and find the space spanned by all
-vectors $x$, such that $\vectornorm{Ax} \geq t$.
-    \item In this setting, computing the SVD is \textcolor{red}{not necessary} anymore!
-   \end{itemize}
-\end{itemize}
+%\begin{itemize}
+%  \item It allows for the process to be \textcolor{red}{inverted}
+%  \begin{itemize}
+%    \item Prescribe the threshold $t$ \textcolor{dgreen}{in advance} and find the space spanned by all
+%vectors $x$, such that $\vectornorm{Ax} \geq t$.
+%    \item In this setting, computing the SVD is \textcolor{red}{not necessary} anymore!
+%   \end{itemize}
+%\end{itemize}
 
-\framebreak
-Represent the \textcolor{dgreen}{frequency} of a row (direction):
+%\framebreak
+Represent the \textcolor{dgreen}{frequency} of a direction (unit vector):
 \begin{itemize}
-  \item Assume rows of $A$ are \textcolor{red}{indicator vectors} of the items: \\
+  \item Assume the directions of $A$ are \textcolor{red}{indicator vectors} of the items: \\
   \begin{center}
   \vspace{2 mm}
   $A = \begin{pmatrix}
@@ -448,7 +393,7 @@ Represent the \textcolor{dgreen}{frequency} of a row (direction):
   \end{center}
   \item Frequency of second item $e_2 = (0,1,0,0)^T$:
   $ \vectornorm{Ae_2}^2 = \vectornorm{(0,1,0,1)^T} ^2= 0^2 + 1^2 + 0^2 + 1^2 = 2$. 
-  \item Generalize the rows (directions) to $\{x : \vectornorm{x}=1\} $ and the \textcolor{dgreen}{frequency} of a direction is $\vectornorm{Ax}^2$.
+  \item Generalize the directions to unit vector $\{x : \vectornorm{x}=1\} $ and the \textcolor{dgreen}{frequency} of a direction is $\vectornorm{Ax}^2$.
 \end{itemize}
 
 \framebreak
@@ -481,76 +426,217 @@ The algorithm:
   \end{algorithmic}
 \end{frame}
 
+
+\begin{frame}[allowframebreaks=1]{Frequent direction example}
+
+\begin{align}
+  A = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0.7605 & 0.6493 \\[0.3em]
+       0.5858 & 0.8104 \\[0.3em]
+       0.3413 & 0.9400
+     \end{pmatrix} 
+  \rightarrow
+  B = \begin{pmatrix}
+      0  & 0  \\[0.3em] 
+       0 & 0
+     \end{pmatrix} \nonumber
+\end{align}
+
+\framebreak
+
+\begin{align}
+  A = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0.7605 & 0.6493 \\[0.3em]
+       0.5858 & 0.8104 \\[0.3em]
+       0.3413 & 0.9400
+     \end{pmatrix} 
+  \rightarrow
+  B = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0 & 0
+     \end{pmatrix} 
+\end{align}
+
+\framebreak
+
+\begin{align}
+  A = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0.7605 & 0.6493 \\[0.3em]
+       0.5858 & 0.8104 \\[0.3em]
+       0.3413 & 0.9400
+     \end{pmatrix} 
+  \rightarrow
+  B = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0.7605 & 0.6493
+     \end{pmatrix} 
+\end{align}
+
+\framebreak
+ $[U,\Sigma,V] \leftarrow SVD(B)$
+\begin{align}
+  B = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0.7605 & 0.6493
+     \end{pmatrix} = \hspace{7cm} \nonumber  \\
+\nonumber  \\
+     \begin{pmatrix}
+        \bovermat{U}{-0.7071 & -0.7071} \\[0.3em] 
+       -0.7071 & 0.7071
+     \end{pmatrix} 
+    \begin{pmatrix}
+       \bovermat{$\Sigma$}{1.3920 & 0.0000}\\[0.3em] 
+       0.0000 & 0.2495
+     \end{pmatrix} 
+    \begin{pmatrix}
+       \bovermat{$V^T$}{-0.8632 & -0.5049} \\[0.3em] 
+       -0.5049 & 0.8632
+     \end{pmatrix}   \nonumber
+\end{align}
+
+$\delta \leftarrow \sigma_{\ell/2}^2$
+\begin{align}
+   \ell/2 = 1, \delta = 1.3920^2 \nonumber
+\end{align}
+
+\framebreak
+$\breve{\Sigma} \leftarrow \sqrt{\max(\Sigma^2-I_\ell\delta,0)}$
+\begin{align}
+ \breve\Sigma=\sqrt{\max(
+      \begin{pmatrix}
+       \bovermat{$\Sigma^2$}{1.3920^2 & 0.0000}\\[0.3em] 
+       0.0000 & 0.2495^2
+     \end{pmatrix} - 
+      \begin{pmatrix}
+       \bovermat{$I\delta$}{1.3920^2 & 0.0000}\\[0.3em] 
+       0.0000 & 1.3920^2
+     \end{pmatrix},0)} 
+   \nonumber
+\end{align}
+$B\leftarrow \breve{\Sigma}V^T$
+\begin{align}
+  B = 
+    \begin{pmatrix}
+       \bovermat{$\breve\Sigma$}{0.0000 & 0.0000}\\[0.3em] 
+       0.0000 & 0.0000
+     \end{pmatrix}   
+    \begin{pmatrix}
+       \bovermat{$V$}{-0.8632 & -0.5049} \\[0.3em] 
+       -0.5049 & 0.8632
+     \end{pmatrix} ^T 
+ = \begin{pmatrix}
+       0 & 0 \\[0.3em] 
+       0 & 0
+      \end{pmatrix}  \nonumber 
+\end{align}
+
+\framebreak
+\begin{align}
+  A = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0.7605 & 0.6493 \\[0.3em]
+       0.5858 & 0.8104 \\[0.3em]
+       0.3413 & 0.9400
+     \end{pmatrix} 
+  \rightarrow
+  B = \begin{pmatrix}
+       0.5858 & 0.8104 \\[0.3em]
+       0 & 0
+     \end{pmatrix} 
+\end{align}
+
+
+\framebreak
+\begin{align}
+  A = \begin{pmatrix}
+       0.9387 & 0.3447 \\[0.3em] 
+       0.7605 & 0.6493 \\[0.3em]
+       0.5858 & 0.8104 \\[0.3em]
+       0.3413 & 0.9400
+     \end{pmatrix} 
+  \rightarrow
+  B = \begin{pmatrix}
+       0.5858 & 0.8104 \\[0.3em]
+       0.3413 & 0.9400
+     \end{pmatrix} 
+\end{align}
+\end{frame}
+
+
 \begin{frame}[allowframebreaks=1]{Properties of the sketch matrix $B$}
-  \vspace{2 mm}
-1. $A^TA \succeq B^TB \succeq 0$. 
-\footnotesize
-\begin{proof}
-  {\color{blue}\begin{flalign}
-   & B^TB \succeq 0 \Leftrightarrow x^TB^TBx \geq 0 \Leftrightarrow \vectornorm{Bx}^2 \geq 0. && \nonumber \\
-   & A^TA \succeq B^TB  \Leftrightarrow x^T(A^TA-B^TB)x \geq 0 \Leftrightarrow \vectornorm{Ax}^2 -\vectornorm{Bx}^2 \geq 0. \nonumber &&
-  \end{flalign}}
-  {\color{blue}\begin{flalign}
-    \vectornorm{Ax}^2 -\vectornorm{Bx}^2 &= \sum_{i=1}^n[\langle A_i, x \rangle^2 + ||B^{i-1}x||^2 - ||B^{i}x||^2] \nonumber &&\\
-    &= \sum_{i=1}^n[||C^ix||^2 - ||B^{i}x||^2]= \sum_{i=1}^n[x^T(C^{i^T}C^i-B^{i^T}B^i)x] \nonumber &&\\
-    &= \sum_{i=1}^n[x^T(V\Sigma^T\Sigma V^T-V\breve{\Sigma}^T\breve{\Sigma} V^T)x] 
-    = \sum_{i=1}^n[x^TV(\Sigma^2 -\breve{\Sigma}^2)V^Tx] \geq 0. && \nonumber
-  \end{flalign}}
-\end{proof}
-
-
-\framebreak
-
-\normalsize
-  \vspace{2 mm}
-2. $ ||A^TA - B^TB || \leq 2|| A||_f^2/\ell$. 
-\footnotesize
-\begin{proof}
-  {\color{blue}\begin{flalign}
-    &||A^TA - B^TB || \leq \sum_{i=1}^n\delta_i \leq 2||A||_f^2/\ell. && \nonumber  
-  \end{flalign}}
-  {\color{blue}\begin{flalign}
-    ||A^TA - B^TB || &= \sigma_{max}(A^TA - B^TB) = x^T(A^TA-B^TB)x = \vectornorm{Ax}^2 -\vectornorm{Bx}^2  \nonumber && \\
-    &= \sum_{i=1}^n[||C^ix||^2 - ||B^{i}x||^2] \leq \sum_{i=1}^n[||C^{i^T}C^i - B^{i^T}B^i||] && \nonumber \\
-    &= \sum_{i=1}^n[||V(\Sigma^2 -\breve{\Sigma}^2) V^T||] =  \sum_{i=1}^n \delta_i. \nonumber && 
-  \end{flalign}}
-\end{proof}
-
-\framebreak
-
-\normalsize
-  \vspace{2 mm}
-2. $ ||A^TA - B^TB || \leq 2|| A||_f^2/\ell$. 
-\footnotesize
-\begin{proof}
-%  \begin{flalign}
-%    &||A^TA - B^TB || \leq \sum_{i=1}^n\delta_i \leq 2||A||_f^2/\ell. && \nonumber 
-%  \end{flalign}
-  {\color{blue}\begin{flalign}
-    ||B^n||_f^2 &= \sum_{i=1}^n[||B^{i-1}x||_f^2 - ||B^{i}||_f^2] = \sum_{i=1}^n[(||C^i||_f^2 - ||B^{i-1}x||_f^2) - (||C^i||_f^2 - ||B^{i}||_f^2)]. && \nonumber \\
-     &= \sum_{i=1}^n ||A_i||_f^2 - tr(C^{i^T}C^i - B^{i^T}B^i) = ||A||_f^2 - \sum_{i=1}^ntr(V(\Sigma^{i^2} -\breve{\Sigma}^{i^2}) V^T) && \nonumber \\
-     &= ||A||_f^2 - \sum_{i=1}^ntr(\Sigma^{i^2} -\breve{\Sigma}^{i^2}) \leq ||A||_f^2 - (\ell/2)\sum_{i=1}^n\delta_i \nonumber.
-  \end{flalign}}
-  {\color{blue}\begin{flalign}
-    \sum_{i=1}^n\delta_i \leq 2(||A||_f^2 - ||B||_f^2)/\ell \leq 2||A||_f^2/\ell. && \nonumber
-  \end{flalign}}
-\end{proof}
-\normalsize
-
-
-\framebreak
 In summary:
 \begin{itemize}
   \item $A^TA \succeq B^TB \succeq 0$.
   \vspace{2 mm}
   \item $ ||A^TA - B^TB || \leq 2|| A||_f^2/\ell$. 
   \vspace{2 mm}
-  \item Let $A = [A_1;A_2]$ and $B_1$, $B_2$ is the sketches of $A_1$ and $A_2$. A sketch $C$ of $B=[B_1;B_2]$ can be shown that (proof omitted):\\
+  \item Let $A = [A_1;A_2]$ and $B_1$, $B_2$ is the sketches of $A_1$ and $A_2$. A sketch $C$ of $B=[B_1;B_2]$ can be shown that:\\
   {\color{blue}\begin{align}
     ||A^TA - C^TC || \leq 2|| A||_f^2/\ell. \nonumber 
   \end{align}}
 \end{itemize}
 \end{frame}
+%  \vspace{2 mm}
+%1. $A^TA \succeq B^TB \succeq 0$. 
+%\footnotesize
+%\begin{proof}
+%  {\color{blue}\begin{flalign}
+%   & B^TB \succeq 0 \Leftrightarrow x^TB^TBx \geq 0 \Leftrightarrow \vectornorm{Bx}^2 \geq 0. && \nonumber \\
+%   & A^TA \succeq B^TB  \Leftrightarrow x^T(A^TA-B^TB)x \geq 0 \Leftrightarrow \vectornorm{Ax}^2 -\vectornorm{Bx}^2 \geq 0. \nonumber &&
+%  \end{flalign}}
+%  {\color{blue}\begin{flalign}
+%    \vectornorm{Ax}^2 -\vectornorm{Bx}^2 &= \sum_{i=1}^n[\langle A_i, x \rangle^2 + ||B^{i-1}x||^2 - ||B^{i}x||^2] \nonumber &&\\
+%    &= \sum_{i=1}^n[||C^ix||^2 - ||B^{i}x||^2]= \sum_{i=1}^n[x^T(C^{i^T}C^i-B^{i^T}B^i)x] \nonumber &&\\
+%    &= \sum_{i=1}^n[x^T(V\Sigma^T\Sigma V^T-V\breve{\Sigma}^T\breve{\Sigma} V^T)x] 
+%    = \sum_{i=1}^n[x^TV(\Sigma^2 -\breve{\Sigma}^2)V^Tx] \geq 0. && \nonumber
+%  \end{flalign}}
+%\end{proof}
+
+
+%\framebreak
+
+%\normalsize
+%  \vspace{2 mm}
+%2. $ ||A^TA - B^TB || \leq 2|| A||_f^2/\ell$. 
+%\footnotesize
+%\begin{proof}
+%  {\color{blue}\begin{flalign}
+%    &||A^TA - B^TB || \leq \sum_{i=1}^n\delta_i \leq 2||A||_f^2/\ell. && \nonumber  
+%  \end{flalign}}
+%  {\color{blue}\begin{flalign}
+%    ||A^TA - B^TB || &= \sigma_{max}(A^TA - B^TB) = x^T(A^TA-B^TB)x = \vectornorm{Ax}^2 -\vectornorm{Bx}^2  \nonumber && \\
+%    &= \sum_{i=1}^n[||C^ix||^2 - ||B^{i}x||^2] \leq \sum_{i=1}^n[||C^{i^T}C^i - B^{i^T}B^i||] && \nonumber \\
+%    &= \sum_{i=1}^n[||V(\Sigma^2 -\breve{\Sigma}^2) V^T||] =  \sum_{i=1}^n \delta_i. %\nonumber && 
+%  \end{flalign}}
+%\end{proof}
+
+%\framebreak
+
+%\normalsize
+%  \vspace{2 mm}
+%2. $ ||A^TA - B^TB || \leq 2|| A||_f^2/\ell$. 
+%\footnotesize
+%\begin{proof}
+%  \begin{flalign}
+%    &||A^TA - B^TB || \leq \sum_{i=1}^n\delta_i \leq 2||A||_f^2/\ell. && \nonumber 
+%  \end{flalign}
+%  {\color{blue}\begin{flalign}
+%    ||B^n||_f^2 &= \sum_{i=1}^n[||B^{i-1}x||_f^2 - ||B^{i}||_f^2] = \sum_{i=1}^n[(||C^i||_f^2 - ||B^{i-1}x||_f^2) - (||C^i||_f^2 - ||B^{i}||_f^2)]. && \nonumber \\
+%     &= \sum_{i=1}^n ||A_i||_f^2 - tr(C^{i^T}C^i - B^{i^T}B^i) = ||A||_f^2 - \sum_{i=1}^ntr(V(\Sigma^{i^2} -\breve{\Sigma}^{i^2}) V^T) && \nonumber \\
+%     &= ||A||_f^2 - \sum_{i=1}^ntr(\Sigma^{i^2} -\breve{\Sigma}^{i^2}) \leq ||A||_f^2 - (\ell/2)\sum_{i=1}^n\delta_i \nonumber.
+%  \end{flalign}}
+%  {\color{blue}\begin{flalign}
+%    \sum_{i=1}^n\delta_i \leq 2(||A||_f^2 - ||B||_f^2)/\ell \leq 2||A||_f^2/\ell. && \nonumber
+%  \end{flalign}}
+%\end{proof}
+%\normalsize
+
+
+%\framebreak
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Experiment section
