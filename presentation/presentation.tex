@@ -231,6 +231,13 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}.
 		\State \}
 	\end{algorithmic}
 \end{itemize}
+
+\framebreak
+\quad
+\begin{figure}
+  \includegraphics[scale=0.4]{plots/freqitems}
+ \label{fig:fp}
+\end{figure}
 \end{frame}
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
@@ -689,29 +696,36 @@ Left figure shows comparison with other techniques and right figure shows the li
 \end{figure}
 
 \framebreak
-Why that:\\
+
 {\color{blue}\begin{flalign}
-  A^TA = \begin{pmatrix}
-       1.2485 & 0.0026 \\[0.3em] 
-       0.0026 & 1.2638
-     \end{pmatrix} \nonumber
+  A^TA = \times\begin{pmatrix}
+       4979.0 & 75.7 \\[0.3em] 
+       75.7 & 5021.0
+     \end{pmatrix} 
+  B^TB = \begin{pmatrix}
+       4979.0 & 75.6 \\[0.3em] 
+       75.6 & 5020.9
+     \end{pmatrix} \nonumber  
 \end{flalign}}
-  Let $\hat{B} = B(1:2,1:2)$ \\
+
 {\color{blue}\begin{flalign}
-  \hat{B}^T\hat{B} = \begin{pmatrix}
-       1.2214 & 0.0051 \\[0.3em] 
-       0.0051 & 1.2369
+  B = \begin{pmatrix}
+       43.0030 & 56.8110 \\[0.3em] 
+       -55.9340 & 32.3390 \\[0.3em] 
+       0.5011 & 0.8654 \\[0.3em] 
+       -0.9427 & -0.3336 \\[0.3em] 
+         0 & 0 \\[0.3em] 
+	 \vdots & \vdots 
      \end{pmatrix} \nonumber
 \end{flalign}}
 \end{frame}
 
-\begin{frame}{What has been omitted from the presentation}
+%\begin{frame}{What has been omitted from the presentation}
 
-\begin{itemize}
-	\item using \textcolor{red}{\textit{Frequent-directions}} to produce \textcolor{dgreen}{low rank approximations}
-\end{itemize}
-
-\end{frame}
+%\begin{itemize}
+%	\item using \textcolor{red}{\textit{Frequent-directions}} to produce \textcolor{dgreen}{low rank approximations}
+%\end{itemize}
+%\end{frame}
 
 %\begin{frame}{What has been omitted from the presentation}
 %

@@ -24,12 +24,15 @@ function twoDexample(n)
       A(i,3) = 4;
     end
   end
+  AA = A(:,1:2);
+  AA = normr(AA);
+  IND = A(:,3);
+  A = [AA IND];
   dlmwrite('example_2d.txt',A);
-  A = dlmread('example_2d.txt');
   l = n/100;
   A = A(:,1:2);
   B = createSketch(l,A);
   B(~any(B,2),:) = [];
   idx = kmeans(B,4);
-  dlmwrite('example_2d_sketch.txt',[B,idx]);
+  dlmwrite('example_2d_sketch.txt',[B idx]);
 end

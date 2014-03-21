@@ -3,7 +3,6 @@ function B = createSketch(l, A)
 	B = zeros(l, m);
 	
 	for i = 1 : n
-		i,B
 		B_hasZeroRows = false;
 		indZeroRow = -1;
 		for j = 1 : l
@@ -17,30 +16,32 @@ function B = createSketch(l, A)
 		
 		if (B_hasZeroRows)
 			B(indZeroRow, :) = A(i, :);
+            
 		else
 			[U, S, V] = svd(B);
-			diagS = diag(S);
 			
-			if (l <= m)
-				delta = diagS(ceil(l / 2)) ^ 2;
-			else
-				delta = diagS(ceil(m / 2)) ^ 2;
-			end
-			%if ceil(l/2)+1 <= length(diagS)
+			diagS = diag(S);
+			 
+			%if (l <= m)
 			%	delta = diagS(ceil(l / 2)+1) ^ 2;
 			%else
-			%	delta = 0;
-			%end			
-			I_l = eye(l);
-			
+			%	delta = diagS(ceil(m / 2)+1) ^ 2;
+			%end
+  			if ceil(l/2) > length(diagS)
+				delta = 0;
+                        else
+				delta = diagS(ceil(l/2)) ^ 2
+			end
+
+			I_l = eye(l);			
 			if (l >= m)
 				I_delta = I_l(:, 1 : m);
-			elseif (l < m)
+			else
 				d = m - l;
 				I_delta = [I_l, zeros(l, d)];
 			end
-                        
-			I_delta = I_delta .* delta
+                        %I_delta = I_l .* delta;
+			I_delta = I_delta .* delta;
 			S_check = sqrt(max((S .^ 2) - I_delta, 0));
 			%B = S_check * V;
 			B = S_check * V';
