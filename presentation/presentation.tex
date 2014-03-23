@@ -59,32 +59,36 @@ Aalto University, School of Science}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-%\begin{frame}{Background}
+\begin{frame}[allowframebreaks=1]{Matrices in the age of 'Big data'}
+%Modern data sets are often viewed as \textcolor{dgreen}{matrices}
+\begin{figure}
+  \includegraphics[scale=0.5]{plots/data_matrices1}
+  \label{fig:data_matrices}
+\end{figure}
+
+%\item Widespread use of matrices, \emph{e.g.} search engines (document-term matrix), social networks (adjacency matrix).
+%\item Textual data in the bag-of-words model %\emph{(Where the rows correspond to documents)}
+%\item Large-scale image analysis %\emph{(Each row corresponds to one image, and contains either pixel values, or other derived feature values)}
+
+\framebreak
+
+\ldots Table: Sample matrix sizes \ldots
+
+\framebreak
+
+% One constraint that is associated with these 'big data'-kind of matrices is..
+We need \textcolor{red}{pass-efficient} algorithms
+
+\begin{itemize}
+\item since data can be read only a \textcolor{dgreen}{constant} number of times.
+\item the \textcolor{red}{streaming model}: \textcolor{dgreen}{only one} pass is permitted!
+\end{itemize}
+
 %\begin{itemize}
-%  \item Many applications are based on matrix, \emph{e.g.} search engine (document-term matrix), social networks (adjacency matrix).
-%  \item In the ``Big data'' setting, matrix could be very large.
-%  \item One way to handle massive data is to utilize map-reduce like programming model.
+%\item Sketching becomes more challenging, since each row can be processed onlyonce.
 %\end{itemize}
-%\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\begin{frame}{Background}
-%\begin{itemize}
-%  \item This paper: approximate the original matrix by a much smaller one while still preserving the correlation (if assume centering in the feature space). 
-%  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$ columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
-
-%This paper shows (Proof shown later):
-%\begin{align}
-%B^TB \prec A^TA \quad \text{and} \quad || A^TA-B^TB || \leq 2||A||_f^2/\ell \nonumber
-%\end{align}
-%\end{itemize}
-%\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -94,54 +98,21 @@ Aalto University, School of Science}
   \textcolor{dgreen}{smaller} than $A$, but still approximates it \textcolor{dgreen}{well}.
   \item A \textcolor{red}{good} sketch matrix is one on which some computations can
   be performed, \textcolor{dgreen}{without} \textit{much} loss of precision.
-   %\emph{(as opposed to performing them on the original matrix)}
+  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$
+columns
+	\begin{itemize}
+		\item a sketch matrix $B$ is one s.t. $B \in \mathbb{R}^{\ell \times m}$,
+		\item containing only $\ell \ll n$ rows and $A^TA \approx B^TB$.
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  \item This paper: approximate the original matrix by a much smaller one while still preserving
+%the correlations (assuming centering in the feature space). 
+%  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$
+%columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
 
-\begin{frame}[allowframebreaks=1]{Why would one need a sketch?}
-\begin{itemize}
-  \item Modern data sets are often viewed as \textcolor{dgreen}{matrices}
-  %\emph{(They are often extremely large)}
-  \item{Examples:}
-  \begin{itemize}
-    \item Textual data in the bag-of-words model %\emph{(Where the rows correspond to documents)}
-    \item Large-scale image analysis %\emph{(Each row corresponds to one image, and contains either pixel values, or other derived feature values)}
-  \end{itemize}
-  \item Low rank approximations are used in PCA, LSI, \textit{k}-means clustering, etc.
-%\end{itemize}
-
-%\framereak
-
-%\begin{itemize}
-  \item Typically, compute the \textcolor{red}{SVD} of some large matrix $A$
-  \item Then \textcolor{dgreen}{approximate} using the first $k$ singular vectors
-  \begin{itemize}
-     \item where $k \geq t$, i.e. only interested in unit vectors such
-     that $\vectornorm{Ax} \geq t$.
-  \end{itemize}
-  \item However, the \textcolor{red}{distributed} nature of such matrices renders SVD \textcolor{dgreen}{infeasible}
-\end{itemize}
-
-\end{frame}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{Properties of matrix sketching methods}
-Designed to be \textcolor{red}{pass-efficient}
-\begin{itemize}
-\item i.e. data can be read only a \textcolor{dgreen}{constant} number of times.
-\end{itemize}
-The \textcolor{red}{streaming model}: \textcolor{dgreen}{only one} pass is permitted!
-\begin{itemize}
-\item Sketching becomes more challenging, since each row can be processed only
-once. %\emph{(further, storage is severely limited)}
-\end{itemize}
-
-\end{frame}
+%B^TB \prec A^TA \quad \text{and} \quad || A^TA-B^TB || \leq 2||A||_f^2/\ell \nonumber
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Related work section
@@ -157,54 +128,81 @@ once. %\emph{(further, storage is severely limited)}
 \end{itemize}
 \end{frame}
 
-\begin{frame}[allowframebreaks=1]{Existing approaches}
-There are three main approaches:
+\begin{frame}[allowframebreaks=1]{How do we get a sketch?}
+% -> concise intuitions 
+% -> how we do it
+% -> what we get (in terms of properties and complexity)
+
+Three existing main approaches:
 \begin{itemize}
-\item \textcolor{red}{random-projection:} encaptures two classes of methods
-\begin{enumerate}[(i)]
-  \item Generate a \textcolor{blue}{sparser} version of the matrix.
+\item \textcolor{red}{Random-projection:} encaptures two classes of methods
+%\begin{enumerate}[(i)]
+  %\item Generate a \textcolor{blue}{sparser} version of the matrix.
    %\emph{\begin{itemize}
    %\item It can then be stored \textit{more efficiently}, and
    %\item can be multiplied \textit{faster} by other matrices.
    %\end{itemize}}
-  \item \textcolor{dgreen}{Randomly combine} matrix rows.
-\end{enumerate}
-\item \textcolor{red}{hashing:} 
-	\begin{itemize}
-		\item Simple and efficient \textcolor{blue}{subspace embeddings} applied in $O(nnz(A))$ time, for any matrix $A$.
-	\end{itemize}
-\item \textcolor{red}{sampling:} \textcolor{dgreen}{Column Subset Selection Problem}:
+  %\item \textcolor{dgreen}{Randomly combine} matrix rows.
+%\end{enumerate}
+\item \textcolor{red}{Hashing:} 
+	%\begin{itemize}
+	%	\item Simple and efficient \textcolor{blue}{subspace embeddings} applied in $O(nnz(A))$ time, for any matrix $A$.
+	%\end{itemize}
+\item \textcolor{red}{Sampling:} \textcolor{dgreen}{Column Subset Selection Problem}:
 %\emph{in the context of the \textit{Column Subset Selection Problem}:}
-\begin{itemize}
-  \item find a \textcolor{blue}{small subset} of matrix rows (or columns) that approximates
-  the entire matrix
+%\begin{itemize}
+  %\item find a \textcolor{blue}{small subset} of matrix rows (or columns) that approximates
+  %the entire matrix
   %\emph{\item solved using a simple streaming solution:}
-   \begin{itemize}
-   \item \textcolor{dgreen}{sample} rows from the input matrix with probability \textcolor{blue}{proportional} to
-   their squared $\ell_{2}$ norm
-   \end{itemize}
-\end{itemize}
+   %\begin{itemize}
+   %\item \textcolor{dgreen}{sample} rows from the input matrix with probability \textcolor{blue}{proportional} to
+   %their squared $\ell_{2}$ norm
+   %\end{itemize}
+%\end{itemize}
 \end{itemize}
 
-Proposed fourth approach, \textcolor{red}{Frequent-directions}.
+%\begin{itemize}
+%   \item \textcolor{red}{All} frequencies can be approximated from a
+%   \textcolor{dgreen}{uniform} sample of the stream
+%   \begin{itemize}
+%		\item using \textcolor{red}{\textit{Chernoff's bound}}, and then applying the \textcolor{red}{\textit{union
+%   bound}}
+%		\item $O(r\log{(r)}/\varepsilon^{2})$ samples suffice to ensure that
+%  
+%		\begin{itemize}
+%			\item $|f_{i} - g_{i}| \leq \varepsilon f_{\text{max}}$, where $r = n / f_{\text{max}}$
+%		\end{itemize}
+%		\item same complexity in \textcolor{red}{sketching}:
+%		\begin{itemize}
+%			\item but $r = \vectornorm{A}_{f}^{2} /
+%				\vectornorm{A}_{2}^{2}$,
+%			\item guaranteeing that $\vectornorm{A^{T}A - B^{T}B} \leq \varepsilon
+%				\vectornorm{A^{T}A}$.
+%		\end{itemize}
+%	\end{itemize}		
+%\end{itemize}
+%
+%\end{frame}
+
+Proposed fourth approach, \textcolor{red}{Frequent-directions}
+\begin{itemize}
+	\item Based on a well known existing algorithm for item frequency estimation.
+	% ... algorithm for estimating frequencies of items arriving in a stream, again obeying the constraint of being able to 'see'
+	% each item only once
+\end{itemize}
 
 \end{frame}
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
 \begin{itemize}
     \item Used to uncover \textcolor{dgreen}{frequent} items in an item stream
-    \item (Re-)Invented (at least!) four times \cite{Misra82, Demaine02, Karp03, Metwally05}
-	\item Referred to as \textcolor{dgreen}{\textit{Frequent-items}}
-\end{itemize}
-\begin{itemize}
-	\item \textbf{Goal:} use $O(\ell)$ space to produce estimates $g_{j}$, such
-	that
-	\begin{itemize}
-		\item{$|f_{j} - g_{j} | \leq n/l$}, for all $j$ \textcolor{red}{simultaneously}
-	\end{itemize}
+    \item (Re-)Invented (at least!) four times \cite{Misra82, Demaine02, Karp03, Metwally05}\footnote{[Misra and Gries, 1982; Demaine et al., 2002; Karp et al., 2003; Metwally, 2005]}
 \end{itemize}
 
-\framebreak
+\ldots add some basic intuition about what the algorithm aims to provide \ldots
+\end{frame}
+
+\begin{frame}[allowframebreaks=1]{Item frequency estimation}
 
 \begin{itemize}
 	\item The algorithm:
@@ -223,9 +221,9 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}.
 			\begin{itemize}\item \textcolor{red}{Create} new bucket for item type $k$ and \textcolor{red}{store} the item there\end{itemize}
 			\item \textcolor{blue}{\textit{Else}}
 				\begin{itemize}
-					\item \textcolor{red}{Find} \textcolor{dgreen}{median} count $\delta = f_{\ell/2}$
+					\item \textcolor{red}{Find} \textcolor{dgreen}{median} count $\delta_{t} = f_{\ell/2}$
 					of items, and
-					\item \textcolor{red}{Remove} exactly $\min{(\delta, f_{i})}$ appearances from each bucket $i = 1 \ldots \ell$
+					\item \textcolor{red}{Remove} exactly $\min{(\delta_{t}, f_{i})}$ appearances from each bucket $i = 1 \ldots \ell$
 				\end{itemize}
 		\end{itemize}
 		\State \}
@@ -233,17 +231,50 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}.
 \end{itemize}
 
 \framebreak
-\quad
+
 \begin{figure}
-  \includegraphics[scale=0.4]{plots/freqitems}
- \label{fig:fp}
+  \includegraphics[scale=0.32]{plots/fi1}
+ \label{fig:fi1}
 \end{figure}
-\end{frame}
 
-\begin{frame}[allowframebreaks=1]{Item frequency estimation}
+\framebreak
 
+\begin{figure}
+  \includegraphics[scale=0.35]{plots/fi2}
+ \label{fig:fi2}
+\end{figure}
 
-\textbf{Claim:}
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.32]{plots/fi3}
+ \label{fig:fi3}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.35]{plots/fi4}
+ \label{fig:fi4}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.3]{plots/fi5}
+ \label{fig:fi5}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.3]{plots/fi6}
+ \label{fig:fi5}
+\end{figure}
+
+\framebreak
+
+\textcolor{dgreen}{Claim.}
 
 \begin{itemize}
 \item \textbf{If} item $a_{j}$ appears in the \textcolor{dgreen}{final} trimmed
@@ -273,38 +304,27 @@ stream $g_{j}$ times
    \begin{itemize} \item $t\ell \leq n$, or $t \leq n/\ell$\cite{Misra82}.\end{itemize} 
 \end{itemize}
 \end{proof}
+
+\ldots What is the intuition of the following? \ldots
+
 \begin{itemize}
   \item If one sets $\ell > 1/\varepsilon$,
   \begin{itemize} \item Then any item that appears \textcolor{dgreen}{more than}
   $\varepsilon n$ times in the stream \textcolor{red}{must} appear in
   the final sketch.\end{itemize}
 \end{itemize}
-  
-\end{frame}
 
-\begin{frame}[allowframebreaks=1]{Connection to \textit{sampling}}
+\ldots Here? \ldots
 
 \begin{itemize}
-   \item \textcolor{red}{All} frequencies can be approximated from a
-   \textcolor{dgreen}{uniform} sample of the stream
-   \begin{itemize}
-		\item using \textcolor{red}{\textit{Chernoff's bound}}, and then applying the \textcolor{red}{\textit{union
-   bound}}
-		\item $O(r\log{(r)}/\varepsilon^{2})$ samples suffice to ensure that
-   
-		\begin{itemize}
-			\item $|f_{i} - g_{i}| \leq \varepsilon f_{\text{max}}$, where $r = n / f_{\text{max}}$
-		\end{itemize}
-		\item same complexity in \textcolor{red}{sketching}:
-		\begin{itemize}
-			\item but $r = \vectornorm{A}_{f}^{2} /
-				\vectornorm{A}_{2}^{2}$,
-			\item guaranteeing that $\vectornorm{A^{T}A - B^{T}B} \leq \varepsilon
-				\vectornorm{A^{T}A}$.
-		\end{itemize}
-	\end{itemize}		
+	\item Use $O(\ell)$ space to produce estimates $g_{j}$, such
+	that
+	\begin{itemize}
+		\item{$|f_{j} - g_{j} | \leq n/l$}, for all $j$ \textcolor{red}{simultaneously}
+	\end{itemize}
 \end{itemize}
 
+  
 \end{frame}
 
 %\begin{frame}[allowframebreaks=1]{\textit{Frequent-items} in matrix sketching}
@@ -431,6 +451,49 @@ The algorithm:
     \EndIf
     \EndFor
   \end{algorithmic}
+  
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.45]{plots/fd1}
+ \label{fig:fd1}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.35]{plots/fd2}
+ \label{fig:fd2}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.45]{plots/fd3}
+ \label{fig:fd3}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.4]{plots/fd4}
+ \label{fig:fd4}
+\end{figure}
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.375]{plots/fd5}
+ \label{fig:fd5}
+\end{figure}  
+
+\framebreak
+
+\begin{figure}
+  \includegraphics[scale=0.4]{plots/fd6}
+ \label{fig:fd6}
+\end{figure} 
+
 \end{frame}
 
 
@@ -747,7 +810,7 @@ Left figure shows comparison with other techniques and right figure shows the li
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{plain}
-\begin{frame}{References}
+\begin{frame}[allowframebreaks=1]{References}
 \small
 \bibliography{presentation}
 \end{frame}
