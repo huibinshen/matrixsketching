@@ -660,28 +660,28 @@ In summary:
 \end{frame}
 
 
-\begin{frame}[allowframebreaks=1]{Experiments}
-Synthetic data $A \in \mathbb{R}^{n\times m}$
-\begin{itemize}
-  \item $A = SDU + N/\zeta$.
-  \item $S \in \mathbb{R}^{n\times d},\quad S_{i,j} \sim \mathcal{N}(0,1)$.
-  \item $D \in \mathbb{R}^{d\times d},\quad D_{i,i} = 1 - (i-1)/d$.
-  \item $U \in \mathbb{R}^{d\times m}, \quad UU^T=I_d$.
-  \item $c_1 \leq \zeta \leq c_2, \quad c_1 \approx 1,c_2 \approx 1$.
-\end{itemize}
-$A$ contains $d$ dimensional signal and $m$ dimensional noise, and is recoverable by spectral methods \cite{Vershynin11}.
+%\begin{frame}[allowframebreaks=1]{Experiments}
+%Synthetic data $A \in \mathbb{R}^{n\times m}$
+%\begin{itemize}
+%  \item $A = SDU + N/\zeta$.
+%  \item $S \in \mathbb{R}^{n\times d},\quad S_{i,j} \sim \mathcal{N}(0,1)$.
+%  \item $D \in \mathbb{R}^{d\times d},\quad D_{i,i} = 1 - (i-1)/d$.
+%  \item $U \in \mathbb{R}^{d\times m}, \quad UU^T=I_d$.
+%  \item $c_1 \leq \zeta \leq c_2, \quad c_1 \approx 1,c_2 \approx 1$.
+%\end{itemize}
+%$A$ contains $d$ dimensional signal and $m$ dimensional noise, and is recoverable by spectral methods \cite{Vershynin11}.
 
 
 \framebreak
-Error against sketch size with $n=10000, m=1000, d=50$.
+For a synthetic matrix $n=10000, m=1000$. Error $||A^TA -B^TB||$ against sketch size $\ell$ with.
 \begin{figure}
   \includegraphics[scale=0.6]{plots/acc}
  \label{fig:fp}
 \end{figure}
 
 \framebreak
-Running time. \\
-Left figure shows comparison with other techniques and right figure shows the linear behavior in $n$ and $m$.
+Running time against sketch size for various sketching algorithms (left).\\
+Running time for different size of $A$ for fixed sketching size $\ell = 100$ (right).
 \begin{figure}
   \subfigure{\includegraphics[scale=0.35]{plots/time1}}
   \subfigure{\includegraphics[scale=0.35]{plots/time2}}
@@ -689,7 +689,7 @@ Left figure shows comparison with other techniques and right figure shows the li
 \end{figure}
 \end{frame}
 
-\begin{frame}[allowframebreaks=1]{More experiments}
+\begin{frame}[allowframebreaks=1]{Clustering experiments}
 \begin{figure}
   \includegraphics[scale=0.6]{plots/data_and_sketch}
  \label{fig:fp}
@@ -741,7 +741,12 @@ Left figure shows comparison with other techniques and right figure shows the li
   \item In terms of $|| A^TA - B^TB||$, the proposed sketching algorithm is \textcolor{red}{more accurate} than sampling, hashing and random projections.
   \item The proposed algorithm runs reasonably fast, \textcolor{red}{faster} than random projection, slower than sampling.
   \item The proposed algorithm is \textcolor{red}{linear} in the scale of the input size.
+  \item Choose your sketching task according to your task!
 \end{itemize}
+\end{frame}
+
+\begin{frame}{}
+Thank you!
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
