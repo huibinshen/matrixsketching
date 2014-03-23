@@ -72,7 +72,7 @@ Aalto University, School of Science}
 
 \framebreak
 
-\ldots Table: Sample matrix sizes \ldots
+\textcolor{gray}{\ldots Table: Sample matrix sizes \ldots}
 
 \end{frame}
 
@@ -119,18 +119,25 @@ columns
 % -> how we do it
 % -> what we get (in terms of properties and complexity)
 
-Three existing main approaches:
+Three existing main classes:
 \begin{itemize}
-\item \textcolor{red}{Random-projection:} encaptures two classes of methods
-%\begin{enumerate}[(i)]
-  %\item Generate a \textcolor{blue}{sparser} version of the matrix.
-   %\emph{\begin{itemize}
-   %\item It can then be stored \textit{more efficiently}, and
-   %\item can be multiplied \textit{faster} by other matrices.
-   %\end{itemize}}
-  %\item \textcolor{dgreen}{Randomly combine} matrix rows.
-%\end{enumerate}
-\item \textcolor{red}{Hashing:} 
+\item \textcolor{red}{Random-projection:} 
+	\begin{enumerate}[(i)]
+% It states that if we are given a set of points in a high-dimensional
+% space, then we can project these points down into a much lower-dimensional random subspace that
+% is independent of the original dimension, and with high probability preserve a lot of its structure in
+% terms of its inter-point distances and angles	
+	
+		% Dimensionality reduction that are noted for their simplicity and strong error guarantees.
+		\item use a \textcolor{blue}{projection} matrix for dimensionality reduction (\textcolor{dgreen}{approximately} preserving the lengths of, the dot products between two original vectors on average, as well as the distances in the transformed space), or
+		\item randomly \textcolor{blue}{combine} matrix rows.
+	\end{enumerate}
+\item \textcolor{red}{Hashing:} use a \textcolor{blue}{subspace embedding} $S$ that embeds the column space of the original matrix into a lower-dimensional subspace
+	\begin{itemize}
+		\item \textcolor{dgreen}{approximately} preserving the norms of all vectors in that subspace
+		\item where $A \in \mathbb{R}^{n \times d}$, $S : \mathbb{R}^{n} \rightarrow \mathbb{R}^{t}$, for all $x \in \mathbb{R}^{d}$, and
+		\item $\vectornorm{SAx}_{2} = (1 \pm \varepsilon)\vectornorm{Ax}_{2}$
+	\end{itemize}
 	%\begin{itemize}
 	%	\item Simple and efficient \textcolor{blue}{subspace embeddings} applied in $O(nnz(A))$ time, for any matrix $A$.
 	%\end{itemize}
@@ -171,6 +178,9 @@ Three existing main approaches:
 %\end{frame}
 
 Proposed fourth approach, \textcolor{red}{Frequent-directions}
+\end{frame}
+
+\begin{frame}[allowframebreaks=1]{Proposed approach: Frequent-directions}
 \begin{itemize}
 	\item Based on a well known existing algorithm for item frequency estimation.
 	\item A \textcolor{red}{pass-efficient} algorithm, given the \textcolor{blue}{constraint}:
@@ -178,8 +188,6 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}
 			\item data can be read only a \textcolor{dgreen}{constant} number of times;
 			\item the \textcolor{red}{streaming model}: \textcolor{dgreen}{only one} pass is permitted!
 		\end{itemize}
-\end{itemize}
-\end{frame}
 
 %\begin{itemize}
 %\item Sketching becomes more challenging, since each row can be processed onlyonce.
@@ -187,14 +195,26 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}
 
 	% ... algorithm for estimating frequencies of items arriving in a stream, again obeying the constraint of being able to 'see'
 	% each item only once
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
 \begin{itemize}
     \item Used to uncover \textcolor{dgreen}{frequent} items in an item stream
+    \item \textcolor{dgreen}{Goal.} Use $O(\ell)$ space to produce estimates $g_{i}$, s.t.
+		\begin{itemize}
+			\item{$|f_{i} - g_{i} | \leq n/\ell$}, for all $i$ \textcolor{red}{simultaneously}.
+		\end{itemize}
+
     \item (Re-)Invented (at least!) four times \cite{Misra82, Demaine02, Karp03, Metwally05}\footnote{[Misra and Gries, 1982; Demaine et al., 2002; Karp et al., 2003; Metwally, 2005]}
 \end{itemize}
 
-\ldots add some basic intuition about what the algorithm aims to provide \ldots
+\textcolor{dgreen}{Goal.} Use $O(\ell)$ space to produce estimates $g_{i}$, s.t.
+\begin{itemize}
+	\item{$|f_{i} - g_{i} | \leq n/l$}, for all $i$ \textcolor{red}{simultaneously}.
+\end{itemize}
+
 \end{frame}
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
@@ -249,7 +269,7 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}
 \framebreak
 
 \begin{figure}
-  \includegraphics[scale=0.35]{plots/fi4}
+  \includegraphics[scale=0.32]{plots/fi4}
  \label{fig:fi4}
 \end{figure}
 
@@ -267,40 +287,43 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}
  \label{fig:fi5}
 \end{figure}
 
-\framebreak
-
-\textcolor{dgreen}{Claim.}
-
+\textcolor{dgreen}{Claim.} \textbf{If} item $a_{i}$ appears in the \textcolor{dgreen}{final} trimmed
+stream $g_{i}$ times
 \begin{itemize}
-\item \textbf{If} item $a_{j}$ appears in the \textcolor{dgreen}{final} trimmed
-stream $g_{j}$ times
-\begin{itemize}
-  \item \textbf{Then} $g_{j}$ is a \textcolor{red}{good approximation} for its
-  true frequency $f_{j}$.%\emph{(even in the case of $g_{j}$ = 0).}
+  \item \textbf{Then} $g_{i}$ is a \textcolor{red}{good approximation} for its
+  true frequency $f_{i}$ (even in the case of $g_{i}$ = 0).
 \end{itemize}         
-\end{itemize}
+
+\framebreak
 
 \begin{proof}
 \begin{itemize}
-   \item Each item-type is deleted \textcolor{dgreen}{at most} once per iteration:
-   \begin{itemize} \item $f_{j} - g_{j} \leq t$, where $t$ is the
-   number of deleted items.\end{itemize}
-%\end{itemize}
+	\item Each item-type is deleted \textcolor{dgreen}{at most} once per iteration:
+		\begin{itemize}\item $g_{i} \leq f_{i}$\end{itemize}
+	\item Each counter is decreased by at most $\delta_{t}$ at time $t$:
+		\begin{itemize}\item $g_{i} \geq f_{i} - \sum_{t} \delta_{t}$\end{itemize}
+	\item Putting this together:
+		\begin{itemize}
+			\item $0 \leq \sum_{i}g_{i} \leq \sum_{t} 1 - (\ell/2)
+				\cdot \delta_{t} = n - (\ell/2) \cdot \sum_{t} \delta_{t}$
+			\item $\sum_{t} \delta_{t} \leq 2n/\ell$
+		\end{itemize}
+	\item Set $\ell = 2/\varepsilon$:
+		\begin{itemize}\item $|f_{i} - g_{i}| \leq \varepsilon n$.\end{itemize}
+\end{itemize}
+\end{proof}
 
-%\framebreak
+\framebreak
 
 %\textbf{Proof (cont.):}
 
 %\begin{itemize}
    %\item \textcolor{gray}{Each item-type is deleted at most once per iteration:}
-   %\begin{itemize} \item \textcolor{gray}{$f_{j} - g_{j} \leq t$, where $t$ is the number of deleted items.}\end{itemize}
-   \item $\ell$ items are deleted in every batch, and the total number of
-   deleted items is \textcolor{red}{upper-bounded} by $n$, therefore:
-   \begin{itemize} \item $t\ell \leq n$, or $t \leq n/\ell$\cite{Misra82}.\end{itemize} 
-\end{itemize}
-\end{proof}
-
-\ldots What is the intuition of the following? \ldots
+   %\begin{itemize} \item \textcolor{gray}{$f_{i} - g_{i} \leq t$, where $t$ is the number of deleted items.}\end{itemize}
+   %\item $\ell$ items are deleted in every batch, and the total number of
+   %deleted items is \textcolor{red}{upper-bounded} by $n$, therefore:
+   %\begin{itemize} \item $t\ell \leq n$, or $t \leq n/\ell$\cite{Misra82}.\end{itemize} 
+\textcolor{gray}{\ldots What is the intuition of the following? \ldots}
 
 \begin{itemize}
   \item If one sets $\ell > 1/\varepsilon$,
@@ -308,70 +331,8 @@ stream $g_{j}$ times
   $\varepsilon n$ times in the stream \textcolor{red}{must} appear in
   the final sketch.\end{itemize}
 \end{itemize}
-
-\ldots Here? \ldots
-
-\begin{itemize}
-	\item Use $O(\ell)$ space to produce estimates $g_{j}$, such
-	that
-	\begin{itemize}
-		\item{$|f_{j} - g_{j} | \leq n/l$}, for all $j$ \textcolor{red}{simultaneously}
-	\end{itemize}
-\end{itemize}
-
-  
+ 
 \end{frame}
-
-%\begin{frame}[allowframebreaks=1]{\textit{Frequent-items} in matrix sketching}
-
-%\begin{itemize}
-  %\item \textbf{Input:} matrix $A$, consisting of a stream of
-  %\textcolor{dgreen}{rows} $A_{i}$,
-%  	\begin{itemize}\item where $A_{i} \in \{ e_{1}, \ldots, e_{m} \}$, for
-  	%$e_{j}$ being the $j$th \textcolor{dgreen}{standard basis} vector
-%  	
-  	%\item $A_{j} = e_{j}$, if the $i$th row of the matrix
-  	%\item Frequency: $f_{j} = \vectornorm{Ae_{j}}^{2}$\\
-  %\end{itemize}
-  %\item \textbf{Output:} $g_{j} = \vectornorm{Be_{j}}^{2}$, which is a
-%  	\textcolor{red}{good approximation} to $f_{j}$
-  %\begin{itemize}\item Let $n = \vectornorm{A}_{f}^{2}$, then $|f_{j} -
-  %g_{j}| \leq n / \ell$, which is equivalent to
-  %\begin{itemize}\item $\vectornorm{Ae_{j}}^{2} -
-  %\vectornorm{Be_{j}}^{2} \leq \vectornorm{A}_{j}^{2} / \ell$\end{itemize}
-  %\end{itemize}
-%\end{itemize}
-
-%\end{frame}
-
-%\begin{frame}[allowframebreaks=1]{Connection to \textit{low-rank approximation}}
-%
-%\begin{itemize}
-   %\item The goal is to obtain a \textcolor{red}{small} matrix $B$,
-   %\begin{itemize}
-     %\item consisting of $\ell$ rows, that contains in its row space
-   	 %\item a projection matrix $\Pi_{B,\xi}^{A}$ of rank $k$ such that 
-   	 %\begin{itemize}
-   	   %\item $\vectornorm{A - A\Pi_{B,\xi}^{A}}_{\xi} \leq (1+\varepsilon)
-   	   %\vectornorm{A - A_{k}}_{\xi}$, 
-
-   	     	%\item where $A_{k}$ is the \textcolor{red}{best}
-   	   %rank-$k$ approximation of $A$, and
-   	   		%\item $\xi$ is either $2$ or $f$%\emph{(i.e. either the spectral norm or the Frobenius norm)}.
-   	 %\end{itemize}
-   %\end{itemize}
-   %\item \textbf{Note:} \textit{Frequent-directions} can be used to
-   %\textcolor{red}{produce} a low-rank approximation result.
-   %\begin{itemize} \item \textit{Lemma 4} from a modified version
-   %of [12].\end{itemize}
-%\end{itemize}
-%\framebreak
-%\textbf{Lemma: }
-%\begin{itemize}
-    %\item \ldots
-%\end{itemize}
-%
-%\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Frequent directions section
