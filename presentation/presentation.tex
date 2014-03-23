@@ -74,20 +74,6 @@ Aalto University, School of Science}
 
 \ldots Table: Sample matrix sizes \ldots
 
-\framebreak
-
-% One constraint that is associated with these 'big data'-kind of matrices is..
-We need \textcolor{red}{pass-efficient} algorithms
-
-\begin{itemize}
-\item since data can be read only a \textcolor{dgreen}{constant} number of times.
-\item the \textcolor{red}{streaming model}: \textcolor{dgreen}{only one} pass is permitted!
-\end{itemize}
-
-%\begin{itemize}
-%\item Sketching becomes more challenging, since each row can be processed onlyonce.
-%\end{itemize}
-
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -187,11 +173,20 @@ Three existing main approaches:
 Proposed fourth approach, \textcolor{red}{Frequent-directions}
 \begin{itemize}
 	\item Based on a well known existing algorithm for item frequency estimation.
+	\item A \textcolor{red}{pass-efficient} algorithm, given the \textcolor{blue}{constraint}:
+		\begin{itemize}
+			\item data can be read only a \textcolor{dgreen}{constant} number of times;
+			\item the \textcolor{red}{streaming model}: \textcolor{dgreen}{only one} pass is permitted!
+		\end{itemize}
+\end{itemize}
+\end{frame}
+
+%\begin{itemize}
+%\item Sketching becomes more challenging, since each row can be processed onlyonce.
+%\end{itemize}
+
 	% ... algorithm for estimating frequencies of items arriving in a stream, again obeying the constraint of being able to 'see'
 	% each item only once
-\end{itemize}
-
-\end{frame}
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
 \begin{itemize}
