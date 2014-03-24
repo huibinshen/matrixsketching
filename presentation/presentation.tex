@@ -372,7 +372,7 @@ The algorithm:
     \State Insert $i^{th}$ row of $A$ into zero valued row of $B$
     \If {$B$ has no zero valued rows}
       \State $[U,\Sigma,V] \leftarrow SVD(B)$
-      \textcolor{gray}{\State $C \leftarrow \Sigma V^T$ // for proof}
+%      \textcolor{gray}{\State $C \leftarrow \Sigma V^T$ // for proof}
       \State $\delta \leftarrow \sigma_{\ell/2}^2$
       \State $\breve{\Sigma} \leftarrow \sqrt{\max(\Sigma^2-I_\ell\delta,0)}$
       \State $B\leftarrow \breve{\Sigma}V^T$
@@ -747,7 +747,7 @@ Linear in $n$ and $m$ ($\ell$ fix to $100$).
 
 \bibliographystyle{plain}
 \begin{frame}[allowframebreaks=1]{References}
-\small
+\footnotesize
 \bibliography{presentation}
 \end{frame}
 
