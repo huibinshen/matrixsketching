@@ -58,23 +58,17 @@ Aalto University, School of Science}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[allowframebreaks=1]{What is a sketch?}
 
-\begin{frame}[allowframebreaks=1]{Matrices in the age of 'Big data'}
-%Modern data sets are often viewed as \textcolor{dgreen}{matrices}
 \begin{figure}
-  \includegraphics[scale=0.5]{plots/data_matrices1}
-  \label{fig:data_matrices}
+  \includegraphics[scale=0.6]{plots/sketch1}
+ \label{fig:sketch1}
 \end{figure}
 
-%\item Widespread use of matrices, \emph{e.g.} search engines (document-term matrix), social networks (adjacency matrix).
-%\item Textual data in the bag-of-words model %\emph{(Where the rows correspond to documents)}
-%\item Large-scale image analysis %\emph{(Each row corresponds to one image, and contains either pixel values, or other derived feature values)}
+Well, not exactly \ldots
 
-\end{frame}
+\framebreak
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\begin{frame}{What is a sketch?}
 \begin{itemize}
   \item A \textcolor{red}{sketch} of a matrix $A$ is another matrix $B$ which is significantly
   \textcolor{dgreen}{smaller} than $A$, but still approximates it \textcolor{dgreen}{well}.
@@ -95,6 +89,21 @@ columns
 %columns, a sketch matrix $B \in \mathbb{R}^{\ell \times m}$ containing only $\ell \ll n$ rows such that $A^TA \approx B^TB$. 
 
 %B^TB \prec A^TA \quad \text{and} \quad || A^TA-B^TB || \leq 2||A||_f^2/\ell \nonumber
+
+\begin{frame}{Why would we need a sketch?}
+A range of common ML/DM tasks, e.g.
+\begin{itemize}
+	\item Dimensionality reduction
+	\item Clustering
+	\item Classification
+	\item Regression
+	\item Signal denoising
+	\item Approximate matrix multiplication
+	\item Recommendation
+	\item Reconstruction
+	\item etc.
+\end{itemize}
+\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Related work section
@@ -125,10 +134,10 @@ Three existing main classes:
 % terms of its inter-point distances and angles	
 	
 		% Dimensionality reduction that are noted for their simplicity and strong error guarantees.
-		\item use a \textcolor{blue}{projection} matrix for dimensionality reduction (\textcolor{dgreen}{approximately} preserving the lengths of, the dot products between two original vectors on average, as well as the distances in the transformed space), or
+		\item use a \textcolor{blue}{projection} matrix for dimensionality reduction (\textcolor{dgreen}{approximately} preserving the lengths of all vectors, the dot products between two original vectors on average, as well as the distances in the transformed space), or
 		\item randomly \textcolor{blue}{combine} matrix rows.
 	\end{enumerate}
-\item \textcolor{red}{Hashing:} use a \textcolor{blue}{subspace embedding} $S$ that embeds the column space of the original matrix into a lower-dimensional subspace
+\item \textcolor{red}{Hashing:} use a \textcolor{blue}{subspace embedding} $S$ that embeds the column space of the original matrix into a lower-dimensional subspace - in $O(\texttt{nnz})$ time!
 	\begin{itemize}
 		\item \textcolor{dgreen}{approximately} preserving the norms of all vectors in that subspace
 		\item where $A \in \mathbb{R}^{n \times d}$, $S : \mathbb{R}^{n} \rightarrow \mathbb{R}^{t}$, for all $x \in \mathbb{R}^{d}$, and
@@ -142,49 +151,31 @@ Three existing main classes:
 \framebreak
 
 \begin{itemize}
-\item \textcolor{red}{Sampling:} \textcolor{dgreen}{Column Subset Selection Problem}
+\item \textcolor{red}{Sampling:} \textcolor{dgreen}{Column Subset Selection problem}
 	\begin{itemize}
-		\item simple solution obtained by sampling rows with probability proportional to their squared $\ell_{2}$ norms
-		\item aim is to recover a low rank matrix whose column space contains most of the space spanned by the top $k$ \textcolor{dgreen}{singular vectors} of the matrix.
-		%\item that \textcolor{dgreen}{approximate} the entire matrix
+		\item simple solution obtained by sampling rows with probability \textcolor{blue}{proportional} to their squared $\ell_{2}$ norms
+		%\item aim is to recover a low rank matrix whose column space contains most of the space spanned by the top $k$ \textcolor{dgreen}{singular vectors} of the matrix.%
 	\end{itemize}
-	
-%\emph{in the context of the \textit{Column Subset Selection Problem}:}
-%\begin{itemize}
-  %\item find a \textcolor{blue}{small subset} of matrix rows (or columns) that approximates
-  %the entire matrix
-  %\emph{\item solved using a simple streaming solution:}
-   %\begin{itemize}
-   %\item \textcolor{dgreen}{sample} rows from the input matrix with probability \textcolor{blue}{proportional} to
-   %their squared $\ell_{2}$ norm
-   %\end{itemize}
-%\end{itemize}
 \end{itemize}
 
-%\begin{itemize}
-%   \item \textcolor{red}{All} frequencies can be approximated from a
-%   \textcolor{dgreen}{uniform} sample of the stream
-%   \begin{itemize}
-%		\item using \textcolor{red}{\textit{Chernoff's bound}}, and then applying the \textcolor{red}{\textit{union
-%   bound}}
-%		\item $O(r\log{(r)}/\varepsilon^{2})$ samples suffice to ensure that
-%  
-%		\begin{itemize}
-%			\item $|f_{i} - g_{i}| \leq \varepsilon f_{\text{max}}$, where $r = n / f_{\text{max}}$
-%		\end{itemize}
-%		\item same complexity in \textcolor{red}{sketching}:
-%		\begin{itemize}
-%			\item but $r = \vectornorm{A}_{f}^{2} /
-%				\vectornorm{A}_{2}^{2}$,
-%			\item guaranteeing that $\vectornorm{A^{T}A - B^{T}B} \leq \varepsilon
-%				\vectornorm{A^{T}A}$.
-%		\end{itemize}
-%	\end{itemize}		
-%\end{itemize}
-%
-%\end{frame}
-
 Proposed fourth approach, \textcolor{red}{Frequent-directions}
+\begin{itemize}
+	\item $O(d\ell)$ space complexity, error decays proportionally to $1/\ell$,
+	\item as opposed to the $1/\sqrt{\ell}$ error-decay of the existing approaches.
+	\item Sketch update operations - per row in $A$ - require \textcolor{dgreen}{amortised} $O(d\ell)$ operations.
+	\item \textcolor{dgreen}{Guarantee.} $0 \leq \vectornorm{Ax}^{2} - \vectornorm{Bx}^{2} \leq \varepsilon\vectornorm{A}_{f}^{2}/\ell$.
+	\begin{itemize}\item where $B$ is of rank at most $2/\varepsilon$\cite{Ghashami14}.\end{itemize}
+	
+\end{itemize}
+\end{frame}
+
+\begin{frame}{A novel \textit{sampling} approach?}
+\begin{figure}
+	\subfigure{\includegraphics[scale=0.5]{plots/sketch1}}
+	\subfigure{\includegraphics[scale=0.16]{plots/sketch2}}
+	\label{fig:sketch2}  
+\end{figure}
+Anyone fancy a 'cool' PhD topic?
 \end{frame}
 
 \begin{frame}[allowframebreaks=1]{Proposed approach: Frequent-directions}
