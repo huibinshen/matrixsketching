@@ -133,7 +133,7 @@ Three existing main classes:
 % is independent of the original dimension, and with high probability preserve a lot of its structure in
 % terms of its inter-point distances and angles	
 		% Dimensionality reduction that are noted for their simplicity and strong error guarantees.		
-\item \textcolor{red}{Hashing:} use a \textcolor{blue}{subspace embedding} $S$ that embeds the column space of the original matrix into a lower-dimensional subspace - in $O(\texttt{nnz})$ time!
+\item \textcolor{red}{Hashing:} use a \textcolor{blue}{subspace embedding} $S$ that embeds the row space of the original matrix into a lower-dimensional subspace - in $O(\texttt{nnz})$ time!
 	%\begin{itemize}
 	%	\item \textcolor{dgreen}{approximately} preserving the norms of all vectors in that subspace
 %		\item where $A \in \mathbb{R}^{n \times d}$, $S : \mathbb{R}^{n} \rightarrow \mathbb{R}^{t}$, for all $x \in \mathbb{R}^{d}$, and
@@ -188,11 +188,6 @@ Anyone fancy a 'cool' PhD topic?
 \end{itemize}
 
 \textcolor{dgreen}{Matrix setting.} Use \textcolor{red}{Frequent-directions} to uncover any direction in space $x$
-\begin{itemize}
-	\item for which $\vectornorm{Ax}^{2} \geq \varepsilon \vectornorm{A}_{2}^{2}$,
-	\item by taking $\ell > 2r/\varepsilon$, where $r$ is the \textcolor{dgreen}{numerical rank} of $A$.
-\end{itemize}
-
 \end{frame}
 
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
@@ -201,6 +196,7 @@ Anyone fancy a 'cool' PhD topic?
 	\item The algorithm:
 	\begin{algorithmic}
 		%% The algorithm
+		
 		\\\State \textbf{Repeat} until there are \textcolor{red}{less than}
 		$\ell$ \textcolor{dgreen}{unique} items left \{
 		\begin{itemize}
