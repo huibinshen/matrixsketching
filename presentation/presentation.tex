@@ -23,7 +23,8 @@
 \newcommand\partialphantom{\vphantom{\frac{\partial e_{P,M}}{\partial w_{1,1}}}}
 
 \title{Simple and Deterministic Matrix Sketching\footnote{Authored by Edo Liberty and and won the \textit{KDD-2013 best paper} award\cite{Liberty13}.}}
-\author[H. Georgiev and H. Shen]{Hristo Georgiev and Huibin Shen}
+
+\author[H. Georgiev and H. Shen]{Presented by:\\Hristo Georgiev and Huibin Shen}
 \institute[ICS]{Department of Information and Computer Science\\
 Aalto University, School of Science}
 
@@ -196,7 +197,7 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}
 		\end{itemize}
 
 %\begin{itemize}
-%\item Sketching becomes more challenging, since each row can be processed onlyonce.
+%\item Sketching becomes more challenging, since each row can be processed only once.
 %\end{itemize}
 
 	% ... algorithm for estimating frequencies of items arriving in a stream, again obeying the constraint of being able to 'see'
@@ -731,18 +732,14 @@ Linear in $n$ and $m$ ($\ell$ fix to $100$).
  \label{fig:fp}
 \end{figure}
 
-\framebreak
 
-{\color{blue}\begin{flalign}
-  A^TA = \begin{pmatrix}
-       4979.0 & 75.7 \\[0.3em] 
-       75.7 & 5021.0
-     \end{pmatrix} ,
-  B^TB = \begin{pmatrix}
-       4979.0 & 75.6 \\[0.3em] 
-       75.6 & 5020.9
-     \end{pmatrix} \nonumber
-\end{flalign}} \\
+\framebreak
+\begin{figure}
+  \includegraphics[scale=0.6]{plots/data_and_sketch2}
+ \label{fig:fp}
+\end{figure}
+
+\framebreak
 
 {\color{blue}\begin{flalign}
   B = \begin{pmatrix}
@@ -753,7 +750,19 @@ Linear in $n$ and $m$ ($\ell$ fix to $100$).
          0 & 0 \\[0.3em] 
 	 \vdots & \vdots 
      \end{pmatrix} \nonumber
+\end{flalign}} 
+
+{\color{blue}\begin{flalign}
+  A^TA = \begin{pmatrix}
+       4979.0 & 75.7 \\[0.3em] 
+       75.7 & 5021.0
+     \end{pmatrix} ,
+  B^TB = \begin{pmatrix}
+       4979.0 & 75.6 \\[0.3em] 
+       75.6 & 5020.9
+     \end{pmatrix} \nonumber
 \end{flalign}}
+
 \end{frame}
 
 \begin{frame}{Conclusion}
