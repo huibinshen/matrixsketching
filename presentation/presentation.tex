@@ -69,10 +69,6 @@ Aalto University, School of Science}
 %\item Textual data in the bag-of-words model %\emph{(Where the rows correspond to documents)}
 %\item Large-scale image analysis %\emph{(Each row corresponds to one image, and contains either pixel values, or other derived feature values)}
 
-\framebreak
-
-\textcolor{gray}{\ldots Table: Sample matrix sizes \ldots}
-
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -83,10 +79,10 @@ Aalto University, School of Science}
   \textcolor{dgreen}{smaller} than $A$, but still approximates it \textcolor{dgreen}{well}.
   \item A \textcolor{red}{good} sketch matrix is one on which some computations can
   be performed, \textcolor{dgreen}{without} \textit{much} loss of precision.
-  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times m}$ with $n$ rows and $m$
+  \item Formally, consider a large matrix $A \in \mathbb{R}^{n\times d}$ with $n$ rows and $d$
 columns
 	\begin{itemize}
-		\item a sketch matrix $B$ is one s.t. $B \in \mathbb{R}^{\ell \times m}$,
+		\item a sketch matrix $B$ is one s.t. $B \in \mathbb{R}^{\ell \times d}$,
 		\item containing only $\ell \ll n$ rows and $A^TA \approx B^TB$.
 	\end{itemize}
 \end{itemize}
@@ -140,7 +136,18 @@ Three existing main classes:
 	%\begin{itemize}
 	%	\item Simple and efficient \textcolor{blue}{subspace embeddings} applied in $O(nnz(A))$ time, for any matrix $A$.
 	%\end{itemize}
-\item \textcolor{red}{Sampling:} \textcolor{dgreen}{Column Subset Selection Problem}:
+\end{itemize}
+
+\framebreak
+
+\begin{itemize}
+\item \textcolor{red}{Sampling:} \textcolor{dgreen}{Column Subset Selection Problem}
+	\begin{itemize}
+		\item simple solution obtained by sampling rows with probability proportional to their squared $\ell_{2}$ norms
+		\item aim is to recover a low rank matrix whose column space contains most of the space spanned by the top $k$ \textcolor{dgreen}{singular vectors} of the matrix.
+		%\item that \textcolor{dgreen}{approximate} the entire matrix
+	\end{itemize}
+	
 %\emph{in the context of the \textit{Column Subset Selection Problem}:}
 %\begin{itemize}
   %\item find a \textcolor{blue}{small subset} of matrix rows (or columns) that approximates
@@ -201,17 +208,19 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}
 \begin{frame}[allowframebreaks=1]{Item frequency estimation}
 \begin{itemize}
     \item Used to uncover \textcolor{dgreen}{frequent} items in an item stream
-    \item \textcolor{dgreen}{Goal.} Use $O(\ell)$ space to produce estimates $g_{i}$, s.t.
-		\begin{itemize}
-			\item{$|f_{i} - g_{i} | \leq n/\ell$}, for all $i$ \textcolor{red}{simultaneously}.
-		\end{itemize}
-
     \item (Re-)Invented (at least!) four times \cite{Misra82, Demaine02, Karp03, Metwally05}\footnote{[Misra and Gries, 1982; Demaine et al., 2002; Karp et al., 2003; Metwally, 2005]}
 \end{itemize}
 
-\textcolor{dgreen}{Goal.} Use $O(\ell)$ space to produce estimates $g_{i}$, s.t.
+\textcolor{dgreen}{Goal.} Use $O(\ell)$ space as opposed to $O(d)$, where $l \ll d$
 \begin{itemize}
-	\item{$|f_{i} - g_{i} | \leq n/l$}, for all $i$ \textcolor{red}{simultaneously}.
+	\item to produce estimates $g_{i}$, s.t.
+	\item $|f_{i} - g_{i} | \leq n/\ell$, for all item types $i$ \textcolor{red}{simultaneously}.
+\end{itemize}
+
+\textcolor{dgreen}{Matrix setting.} Use \textcolor{red}{Frequent-directions} to uncover any direction in space $x$
+\begin{itemize}
+	\item for which $\vectornorm{Ax}^{2} \geq \varepsilon \vectornorm{A}_{2}^{2}$,
+	\item by taking $\ell > 2r/\varepsilon$, where $r$ is the \textcolor{dgreen}{numerical rank} of $A$.
 \end{itemize}
 
 \end{frame}
@@ -286,11 +295,12 @@ Proposed fourth approach, \textcolor{red}{Frequent-directions}
  \label{fig:fi5}
 \end{figure}
 
-\textcolor{dgreen}{Claim.} \textbf{If} item $a_{i}$ appears in the \textcolor{dgreen}{final} trimmed
-stream $g_{i}$ times
+\textcolor{dgreen}{Claim.} 
+For each item type $i$,
 \begin{itemize}
-  \item \textbf{Then} $g_{i}$ is a \textcolor{red}{good approximation} for its
-  true frequency $f_{i}$ (even in the case of $g_{i}$ = 0).
+	\item $g_{i}$ is a \textcolor{red}{good} approximation for its
+  true frequency $f_{i}$ (even in the case of $g_{i}$ = 0),
+	\item \textcolor{red}{'Good':} $|f_{i} - g_{i} | \leq n/\ell$.
 \end{itemize}         
 
 \framebreak
@@ -300,7 +310,7 @@ stream $g_{i}$ times
 	\item Each item-type is deleted \textcolor{dgreen}{at most} once per iteration:
 		\begin{itemize}\item $g_{i} \leq f_{i}$\end{itemize}
 	\item Each counter is decreased by at most $\delta_{t}$ at time $t$:
-		\begin{itemize}\item $g_{i} \geq f_{i} - \sum_{t} \delta_{t}$\end{itemize}
+		\begin{itemize}\item $g_{i} \geq f_{i} - \sum_{t} \delta_{t} \Leftrightarrow f_{i} - g_{i} \leq \sum_{t} \delta_{t}$\end{itemize}
 	\item Putting this together:
 		\begin{itemize}
 			\item $0 \leq \sum_{i}g_{i} \leq \sum_{t} 1 - (\ell/2)
@@ -746,35 +756,22 @@ Linear in $n$ and $m$ ($\ell$ fix to $100$).
 \end{flalign}}
 \end{frame}
 
-%\begin{frame}{What has been omitted from the presentation}
-
-%\begin{itemize}
-%	\item using \textcolor{red}{\textit{Frequent-directions}} to produce \textcolor{dgreen}{low rank approximations}
-%\end{itemize}
-%\end{frame}
-
-%\begin{frame}{What has been omitted from the presentation}
-%
-%\begin{itemize}
-	%\item using \textcolor{red}{\textit{Frequent-directions}} to produce \textcolor{dgreen}{low rank approximations}
-%\end{itemize}
-	%\item proof for the \textit{red}{sketching of sketches} property
-%
-%\end{frame}
-
 \begin{frame}{Conclusion}
 \begin{itemize}
   \item In terms of $|| A^TA - B^TB||$, the proposed sketching algorithm is \textcolor{red}{more accurate} than sampling, hashing and random projections.
-  \item The proposed algorithm runs reasonably fast, \textcolor{red}{faster} than random projection, slower than sampling.
+  \item The proposed algorithm runs reasonably fast
+  \begin{itemize}\item in fact, \textcolor{red}{faster} than random projection, slower than sampling.\end{itemize}
   \item The proposed algorithm is \textcolor{red}{linear} in the scale of the input size.
   \item Choose your sketching algorithm according to your task!
 \end{itemize}
 \end{frame}
 
-\begin{frame}{}
-Thank you!
-\end{frame}
 
+\begin{frame}{Thank you!}
+\begin{itemize}
+  \item \LARGE{Questions?}
+\end{itemize}
+\end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \bibliographystyle{plain}
