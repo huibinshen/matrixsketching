@@ -200,23 +200,25 @@ Anyone fancy a 'cool' PhD topic?
 \begin{itemize}
 	\item The algorithm:
 	\begin{algorithmic}
-		\State \textbf{Input}:\begin{itemize}\item $d$ \textcolor{dgreen}{items} $a_{1}$, $a_{2}$, \ldots,
-		$a_{d}$
-		\item $n$ \textcolor{dgreen}{item appearances} $A_{1}$, $A_{2}$, \ldots,
-		$A_{n}$\end{itemize}
+		%% The algorithm
 		\\\State \textbf{Repeat} until there are \textcolor{red}{less than}
 		$\ell$ \textcolor{dgreen}{unique} items left \{
 		\begin{itemize}
-			\item \textcolor{red}{Get} item $A_{j}$ from stream, for $j = 1 \ldots n$
+			\item \textcolor{red}{Get} item $A_{t} = a_{i}$ from stream, for $t = 1, \ldots, n$
 		\end{itemize}
 		\begin{itemize}
-			\item \textcolor{blue}{\textit{If}} there are free slots among $\ell$
-			\begin{itemize}\item \textcolor{red}{Create} new bucket for item type $k$ and \textcolor{red}{store} the item there\end{itemize}
+			\item \textcolor{blue}{\textit{If}} a bucket/counter for item type $i$ already exists
+				\begin{itemize}\item Increment $f_{i}$ accordingly.\end{itemize}
+			\item \textcolor{blue}{\textit{Else If}} a free slot $k$ exists, s.t. $1 \leq k \leq \ell$
+			\begin{itemize}
+				\item \textcolor{red}{Create} new bucket/counter at position $k$ for item type $i$, and
+				\item \textcolor{red}{Store} the item in $f_{i}$
+			\end{itemize}
 			\item \textcolor{blue}{\textit{Else}}
 				\begin{itemize}
-					\item \textcolor{red}{Find} \textcolor{dgreen}{median} count $\delta_{t} = f_{\ell/2}$
+					\item \textcolor{red}{Find} \textcolor{dgreen}{median} count $\delta = f_{\ell/2}$
 					of items, and
-					\item \textcolor{red}{Remove} exactly $\min{(\delta_{t}, f_{i})}$ appearances from each bucket $i = 1 \ldots \ell$
+					\item \textcolor{red}{Remove} exactly $\min{(\delta, f_{i})}$ appearances from each bucket $i = 1, \ldots, \ell$
 				\end{itemize}
 		\end{itemize}
 		\State \}
