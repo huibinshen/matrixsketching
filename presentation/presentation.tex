@@ -23,7 +23,6 @@
 \newcommand\partialphantom{\vphantom{\frac{\partial e_{P,M}}{\partial w_{1,1}}}}
 
 \title{Simple and Deterministic Matrix Sketching\footnote{Authored by Edo Liberty and and won the \textit{KDD-2013 best paper} award\cite{Liberty13}.}}
-
 \author[H. Georgiev and H. Shen]{Hristo Georgiev and Huibin Shen}
 \institute[ICS]{Department of Information and Computer Science\\
 Aalto University, School of Science}
@@ -394,8 +393,8 @@ The \textcolor{dgreen}{frequency} of a direction is indicated by the square of c
 \framebreak
 The algorithm:
   \begin{algorithmic}
-    \State \textbf{Input}: $\ell$, $A \in \mathbb{R}^{n\times m}$
-    \State $B \leftarrow $ all zeros matrix $\in \mathbb{R}^{\ell\times m}$
+    \State \textbf{Input}: $\ell$, $A \in \mathbb{R}^{n\times d}$
+    \State $B \leftarrow $ all zeros matrix $\in \mathbb{R}^{\ell\times d}$
     \For{$i =1,\ldots,n$} 
     \State Insert $i^{th}$ row of $A$ into zero valued row of $B$
     \If {$B$ has no zero valued rows}
@@ -423,21 +422,22 @@ The algorithm:
 \end{figure}
 
 \framebreak
-
+$[U,\Sigma,V] \leftarrow SVD(B)$. 
 \begin{figure}
   \includegraphics[scale=0.45]{plots/fd3}
  \label{fig:fd3}
 \end{figure}
 
 \framebreak
-
+$\delta \leftarrow \sigma_{\ell/2}^2$.\\
 \begin{figure}
   \includegraphics[scale=0.4]{plots/fd4}
  \label{fig:fd4}
 \end{figure}
 
 \framebreak
-
+$\check{\Sigma} \leftarrow \sqrt{\max(\Sigma^2-I_\ell\delta,0)}$\\
+$B\leftarrow \check{\Sigma}V^T$
 \begin{figure}
   \includegraphics[scale=0.375]{plots/fd5}
  \label{fig:fd5}
@@ -453,143 +453,143 @@ The algorithm:
 \end{frame}
 
 
-\begin{frame}[allowframebreaks=1]{Frequent direction example}
+%\begin{frame}[allowframebreaks=1]{Frequent direction example}
+%
+%\begin{align}
+%  A = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0.7605 & 0.6493 \\[0.3em]
+%       0.5858 & 0.8104 \\[0.3em]
+%       0.3413 & 0.9400
+%     \end{pmatrix} 
+%  \rightarrow
+%  B = \begin{pmatrix}
+%      0  & 0  \\[0.3em] 
+%       0 & 0
+%     \end{pmatrix} \nonumber
+%\end{align}
 
-\begin{align}
-  A = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0.7605 & 0.6493 \\[0.3em]
-       0.5858 & 0.8104 \\[0.3em]
-       0.3413 & 0.9400
-     \end{pmatrix} 
-  \rightarrow
-  B = \begin{pmatrix}
-      0  & 0  \\[0.3em] 
-       0 & 0
-     \end{pmatrix} \nonumber
-\end{align}
+%\framebreak
+%
+%\begin{align}
+%  A = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0.7605 & 0.6493 \\[0.3em]
+%       0.5858 & 0.8104 \\[0.3em]
+%       0.3413 & 0.9400
+%     \end{pmatrix} 
+%  \rightarrow
+%  B = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0 & 0
+%     \end{pmatrix} 
+%\end{align}
+%
+%\framebreak
 
-\framebreak
+%\begin{align}
+%  A = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0.7605 & 0.6493 \\[0.3em]
+%       0.5858 & 0.8104 \\[0.3em]
+%       0.3413 & 0.9400
+%     \end{pmatrix} 
+%  \rightarrow
+%  B = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0.7605 & 0.6493
+%     \end{pmatrix} 
+%\end{align}
 
-\begin{align}
-  A = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0.7605 & 0.6493 \\[0.3em]
-       0.5858 & 0.8104 \\[0.3em]
-       0.3413 & 0.9400
-     \end{pmatrix} 
-  \rightarrow
-  B = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0 & 0
-     \end{pmatrix} 
-\end{align}
+%\framebreak
+% $[U,\Sigma,V] \leftarrow SVD(B)$
+%\begin{align}
+%  B = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0.7605 & 0.6493
+%     \end{pmatrix} = \hspace{7cm} \nonumber  \\
+%\nonumber  \\
+%     \begin{pmatrix}
+%        \bovermat{U}{-0.7071 & -0.7071} \\[0.3em] 
+%       -0.7071 & 0.7071
+%     \end{pmatrix} 
+%    \begin{pmatrix}
+%       \bovermat{$\Sigma$}{1.3920 & 0.0000}\\[0.3em] 
+%       0.0000 & 0.2495
+%     \end{pmatrix} 
+%    \begin{pmatrix}
+%       \bovermat{$V^T$}{-0.8632 & -0.5049} \\[0.3em] 
+%       -0.5049 & 0.8632
+%     \end{pmatrix}   \nonumber
+%\end{align}
+%
+%$\delta \leftarrow \sigma_{\ell/2}^2$
+%\begin{align}
+%   \ell/2 = 1, \delta = 1.3920^2 \nonumber
+%\end{align}
 
-\framebreak
+%\framebreak
+%$\breve{\Sigma} \leftarrow \sqrt{\max(\Sigma^2-I_\ell\delta,0)}$
+%\begin{align}
+% \breve\Sigma=\sqrt{\max(
+%      \begin{pmatrix}
+%       \bovermat{$\Sigma^2$}{1.3920^2 & 0.0000}\\[0.3em] 
+%       0.0000 & 0.2495^2
+%     \end{pmatrix} - 
+%      \begin{pmatrix}
+%       \bovermat{$I\delta$}{1.3920^2 & 0.0000}\\[0.3em] 
+%       0.0000 & 1.3920^2
+%     \end{pmatrix},0)} 
+%   \nonumber
+%\end{align}
+%$B\leftarrow \breve{\Sigma}V^T$
+%\begin{align}
+%  B = 
+%    \begin{pmatrix}
+%       \bovermat{$\breve\Sigma$}{0.0000 & 0.0000}\\[0.3em] 
+%       0.0000 & 0.0000
+%     \end{pmatrix}   
+%    \begin{pmatrix}
+%       \bovermat{$V$}{-0.8632 & -0.5049} \\[0.3em] 
+%       -0.5049 & 0.8632
+%     \end{pmatrix} ^T 
+% = \begin{pmatrix}
+%       0 & 0 \\[0.3em] 
+%       0 & 0
+%      \end{pmatrix}  \nonumber 
+%\end{align}
 
-\begin{align}
-  A = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0.7605 & 0.6493 \\[0.3em]
-       0.5858 & 0.8104 \\[0.3em]
-       0.3413 & 0.9400
-     \end{pmatrix} 
-  \rightarrow
-  B = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0.7605 & 0.6493
-     \end{pmatrix} 
-\end{align}
-
-\framebreak
- $[U,\Sigma,V] \leftarrow SVD(B)$
-\begin{align}
-  B = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0.7605 & 0.6493
-     \end{pmatrix} = \hspace{7cm} \nonumber  \\
-\nonumber  \\
-     \begin{pmatrix}
-        \bovermat{U}{-0.7071 & -0.7071} \\[0.3em] 
-       -0.7071 & 0.7071
-     \end{pmatrix} 
-    \begin{pmatrix}
-       \bovermat{$\Sigma$}{1.3920 & 0.0000}\\[0.3em] 
-       0.0000 & 0.2495
-     \end{pmatrix} 
-    \begin{pmatrix}
-       \bovermat{$V^T$}{-0.8632 & -0.5049} \\[0.3em] 
-       -0.5049 & 0.8632
-     \end{pmatrix}   \nonumber
-\end{align}
-
-$\delta \leftarrow \sigma_{\ell/2}^2$
-\begin{align}
-   \ell/2 = 1, \delta = 1.3920^2 \nonumber
-\end{align}
-
-\framebreak
-$\breve{\Sigma} \leftarrow \sqrt{\max(\Sigma^2-I_\ell\delta,0)}$
-\begin{align}
- \breve\Sigma=\sqrt{\max(
-      \begin{pmatrix}
-       \bovermat{$\Sigma^2$}{1.3920^2 & 0.0000}\\[0.3em] 
-       0.0000 & 0.2495^2
-     \end{pmatrix} - 
-      \begin{pmatrix}
-       \bovermat{$I\delta$}{1.3920^2 & 0.0000}\\[0.3em] 
-       0.0000 & 1.3920^2
-     \end{pmatrix},0)} 
-   \nonumber
-\end{align}
-$B\leftarrow \breve{\Sigma}V^T$
-\begin{align}
-  B = 
-    \begin{pmatrix}
-       \bovermat{$\breve\Sigma$}{0.0000 & 0.0000}\\[0.3em] 
-       0.0000 & 0.0000
-     \end{pmatrix}   
-    \begin{pmatrix}
-       \bovermat{$V$}{-0.8632 & -0.5049} \\[0.3em] 
-       -0.5049 & 0.8632
-     \end{pmatrix} ^T 
- = \begin{pmatrix}
-       0 & 0 \\[0.3em] 
-       0 & 0
-      \end{pmatrix}  \nonumber 
-\end{align}
-
-\framebreak
-\begin{align}
-  A = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0.7605 & 0.6493 \\[0.3em]
-       0.5858 & 0.8104 \\[0.3em]
-       0.3413 & 0.9400
-     \end{pmatrix} 
-  \rightarrow
-  B = \begin{pmatrix}
-       0.5858 & 0.8104 \\[0.3em]
-       0 & 0
-     \end{pmatrix} 
-\end{align}
+%\framebreak
+%\begin{align}
+%  A = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0.7605 & 0.6493 \\[0.3em]
+%       0.5858 & 0.8104 \\[0.3em]
+%       0.3413 & 0.9400
+%     \end{pmatrix} 
+%  \rightarrow
+%  B = \begin{pmatrix}
+%       0.5858 & 0.8104 \\[0.3em]
+%       0 & 0
+%     \end{pmatrix} 
+%\end{align}
 
 
-\framebreak
-\begin{align}
-  A = \begin{pmatrix}
-       0.9387 & 0.3447 \\[0.3em] 
-       0.7605 & 0.6493 \\[0.3em]
-       0.5858 & 0.8104 \\[0.3em]
-       0.3413 & 0.9400
-     \end{pmatrix} 
-  \rightarrow
-  B = \begin{pmatrix}
-       0.5858 & 0.8104 \\[0.3em]
-       0.3413 & 0.9400
-     \end{pmatrix} 
-\end{align}
-\end{frame}
+%\framebreak
+%\begin{align}
+%  A = \begin{pmatrix}
+%       0.9387 & 0.3447 \\[0.3em] 
+%       0.7605 & 0.6493 \\[0.3em]
+%       0.5858 & 0.8104 \\[0.3em]
+%       0.3413 & 0.9400
+%     \end{pmatrix} 
+%  \rightarrow
+%  B = \begin{pmatrix}
+%       0.5858 & 0.8104 \\[0.3em]
+%       0.3413 & 0.9400
+%     \end{pmatrix} 
+%\end{align}
+%\end{frame}
 
 
 \begin{frame}[allowframebreaks=1]{Properties of the sketch matrix $B$}
@@ -691,24 +691,31 @@ In summary:
 %$A$ contains $d$ dimensional signal and $m$ dimensional noise, and is recoverable by spectral methods \cite{Vershynin11}.
 
 
-\framebreak
+\begin{frame}[allowframebreaks=1]{Experiments}
 For a synthetic matrix $n=10000, m=1000$. Error $||A^TA -B^TB||$ against sketch size $\ell$ with.
 \begin{figure}
   \includegraphics[scale=0.6]{plots/acc}
  \label{fig:fp}
 \end{figure}
 
+
+
+%Running time against sketch size for various sketching algorithms (left). Running time for different size of $A$ for fixed sketching size $\ell = 100$ (right).
 \framebreak
-Running time against sketch size for various sketching algorithms (left).\\
-Running time for different size of $A$ for fixed sketching size $\ell = 100$ (right).
+Running time.
+% against sketch size for various sketching algorithms (left). Running time for different size of $A$ for fixed sketching size $\ell = 100$ (right).
 \begin{figure}
-  \subfigure{\includegraphics[scale=0.35]{plots/time1}}
-  \subfigure{\includegraphics[scale=0.35]{plots/time2}}
- \label{fig:fgtree}
+  \includegraphics[scale=0.6]{plots/time1}
+\end{figure}
+
+\framebreak
+Linear in $n$ and $m$ ($\ell$ fix to $100$).
+\begin{figure}
+  \includegraphics[scale=0.6]{plots/time2}
 \end{figure}
 \end{frame}
 
-\begin{frame}[allowframebreaks=1]{Clustering experiments}
+\begin{frame}[allowframebreaks=1]{Clustering experiment}
 \begin{figure}
   \includegraphics[scale=0.6]{plots/data_and_sketch}
  \label{fig:fp}
@@ -717,15 +724,15 @@ Running time for different size of $A$ for fixed sketching size $\ell = 100$ (ri
 \framebreak
 
 {\color{blue}\begin{flalign}
-  A^TA = \times\begin{pmatrix}
+  A^TA = \begin{pmatrix}
        4979.0 & 75.7 \\[0.3em] 
        75.7 & 5021.0
-     \end{pmatrix} 
+     \end{pmatrix} ,
   B^TB = \begin{pmatrix}
        4979.0 & 75.6 \\[0.3em] 
        75.6 & 5020.9
-     \end{pmatrix} \nonumber  
-\end{flalign}}
+     \end{pmatrix} \nonumber
+\end{flalign}} \\
 
 {\color{blue}\begin{flalign}
   B = \begin{pmatrix}
@@ -760,7 +767,7 @@ Running time for different size of $A$ for fixed sketching size $\ell = 100$ (ri
   \item In terms of $|| A^TA - B^TB||$, the proposed sketching algorithm is \textcolor{red}{more accurate} than sampling, hashing and random projections.
   \item The proposed algorithm runs reasonably fast, \textcolor{red}{faster} than random projection, slower than sampling.
   \item The proposed algorithm is \textcolor{red}{linear} in the scale of the input size.
-  \item Choose your sketching task according to your task!
+  \item Choose your sketching algorithm according to your task!
 \end{itemize}
 \end{frame}
 
